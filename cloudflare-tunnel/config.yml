@@ -1,26 +1,19 @@
-tunnel: YOUR_TUNNEL_ID
-credentials-file: /root/.cloudflared/YOUR_TUNNEL_ID.json
+tunnel: 5d3b6d91-4475-47e1-8a0e-6f7072e22632
+credentials-file: /etc/cloudflared/cert.json
 
 ingress:
-  # Frontend - Ana domain
-  - hostname: formexus.yourdomain.com
-    service: http://localhost:3000
-    originRequest:
-      noTLSVerify: false
-      connectTimeout: 30s
-
-  # Backend API - API subdomain
-  - hostname: api.formexus.yourdomain.com
-    service: http://localhost:8080
-    originRequest:
-      noTLSVerify: false
-      connectTimeout: 30s
-
-  # Catch-all rule (required)
+  # Backend API - MUST BE FIRST (path matching)
+  - hostname: formexus.net
+    path: /api/*
+    service: http://backend:8080
+  
+  # Frontend - www redirect
+  - hostname: www.formexus.net
+    service: http://frontend:80
+  
+  # Frontend - formexus.net (catch-all for this hostname)
+  - hostname: formexus.net
+    service: http://frontend:80
+  
+  # Catch-all rule
   - service: http_status:404
-
-# Optional: Logging configuration
-loglevel: info
-
-# Optional: Metrics
-metrics: localhost:60123
