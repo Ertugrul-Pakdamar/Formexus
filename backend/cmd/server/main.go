@@ -50,6 +50,7 @@ func main() {
 
 	// Global middleware
 	app.Use(recover.New())
+	app.Use(middleware.SecurityHeaders())
 	app.Use(middleware.Logger())
 	app.Use(cors.New(cors.Config{
 		AllowOrigins:     "http://localhost:5173,https://formexus.onrender.com,https://formexus-51vy.onrender.com",

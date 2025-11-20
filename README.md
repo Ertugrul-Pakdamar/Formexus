@@ -124,7 +124,7 @@ cd Formexus
 # 2. Setup backend
 cd backend
 cp .env.example .env
-# Edit .env and configure your settings (see SETUP.md)
+# Edit .env and configure your settings
 cd docker && bash clean_setup.sh && cd ..
 go mod download
 make run
@@ -136,8 +136,6 @@ cp .env.example .env
 npm install
 npm run dev
 ```
-
-**📖 For detailed setup instructions (including production deployment), see [SETUP.md](./SETUP.md)**
 
 ### Environment Setup
 
@@ -158,8 +156,6 @@ cp .env.example .env
 ```
 
 **⚠️ Important:** Never commit `.env` files to Git! They contain sensitive data.
-
-See [SETUP.md](./SETUP.md) for detailed configuration guide.
 
 ---
 
@@ -257,8 +253,6 @@ Create `frontend/.env` from `frontend/.env.example`:
 VITE_API_URL=http://localhost:8080/api
 ```
 
-**📖 For production deployment and detailed configuration, see [SETUP.md](./SETUP.md)**
-
 ---
 
 ## 📚 API Documentation
@@ -330,8 +324,6 @@ We provide detailed guides for:
 
 - **Render.com** (Free tier available) - Currently in use
 - **MongoDB Atlas** (Free M0 cluster) - Currently in use
-
-**📖 See [SETUP.md](./SETUP.md) for complete deployment guide with step-by-step instructions.**
 
 ### Quick Deploy Summary
 

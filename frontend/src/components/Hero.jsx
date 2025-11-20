@@ -15,16 +15,16 @@ function Hero() {
 
   return (
     <>
-      <section className="h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden py-20">
         {/* Logo - Top Left */}
-        <div className="absolute top-8 left-8 z-20">
-          <div className="flex items-center space-x-3">
-            <div className="p-1.5 bg-purple-600 rounded-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
+        <div className="absolute top-4 left-4 sm:top-8 sm:left-8 z-20">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="p-1 sm:p-1.5 bg-purple-600 rounded-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 sm:w-6 sm:h-6 text-white">
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
               </svg>
             </div>
-            <span className="text-xl font-semibold text-gray-800 tracking-tight">Formexus</span>
+            <span className="text-lg sm:text-xl font-semibold text-gray-800 tracking-tight">Formexus</span>
           </div>
         </div>
 
@@ -42,15 +42,15 @@ function Hero() {
         </div>
 
         <div className="text-center max-w-4xl mx-auto animate-slide-up relative z-10">
-          <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-4 sm:mb-6 px-2">
             {t('welcomeTo')} <span className="text-purple-600">Formexus</span>
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
             {t('heroDescription')}
           </p>
           <button 
             onClick={() => setIsLoginModalOpen(true)}
-            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-lg text-base sm:text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             {t('createForm')}
           </button>

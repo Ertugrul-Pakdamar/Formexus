@@ -290,23 +290,23 @@ function Workspace() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-white">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <div className="p-1.5 bg-purple-600 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-white">
+      <header className="bg-white shadow-sm sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-3 sm:py-4">
+          <div className="flex justify-between items-center gap-2">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="p-1 sm:p-1.5 bg-purple-600 rounded-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 sm:w-6 sm:h-6 text-white">
                   <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                 </svg>
               </div>
-              <span className="text-xl font-semibold text-gray-800 tracking-tight">Formexus</span>
+              <span className="text-base sm:text-xl font-semibold text-gray-800 tracking-tight">Formexus</span>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 sm:gap-2 md:gap-4">
               <LanguageSwitcher />
-              <span className="text-gray-600">{t('welcome')}, {user?.name}</span>
+              <span className="text-gray-600 text-xs sm:text-sm md:text-base hidden sm:inline truncate max-w-[100px] md:max-w-none">{t('welcome')}, {user?.name}</span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium"
+                className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-gray-600 hover:text-gray-900 font-medium text-xs sm:text-sm md:text-base"
               >
                 {t('logout')}
               </button>
@@ -317,22 +317,22 @@ function Workspace() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Create New Form Section */}
-        <section className="mb-12">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">{t('createNewForm')}</h2>
-            <p className="text-gray-600">{t('chooseTemplate')}</p>
+        <section className="mb-8 sm:mb-12">
+          <div className="text-center mb-6 sm:mb-8 px-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{t('createNewForm')}</h2>
+            <p className="text-sm sm:text-base text-gray-600">{t('chooseTemplate')}</p>
           </div>
 
-          <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             {templates.map((template) => (
               <button
                 key={template.id}
                 onClick={() => createNewForm(template)}
-                className={`${template.color} p-6 rounded-xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-left cursor-pointer`}
+                className={`${template.color} p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-left cursor-pointer`}
               >
-                <div className="text-purple-600 mb-3">{template.icon}</div>
-                <h3 className="font-semibold text-gray-900 mb-1">{t(template.nameKey)}</h3>
-                <p className="text-sm text-gray-600">{t(template.descKey)}</p>
+                <div className="text-purple-600 mb-2 sm:mb-3">{template.icon}</div>
+                <h3 className="font-semibold text-gray-900 mb-1 text-sm sm:text-base">{t(template.nameKey)}</h3>
+                <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">{t(template.descKey)}</p>
               </button>
             ))}
           </div>
@@ -340,12 +340,12 @@ function Workspace() {
 
         {/* My Forms Section */}
         <section>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">{t('myForms')}</h2>
-            <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3 sm:gap-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{t('myForms')}</h2>
+            <div className="flex gap-1 sm:gap-2 w-full sm:w-auto overflow-x-auto">
               <button
                 onClick={() => setFilter('all')}
-                className={`px-4 py-2 font-medium rounded-lg transition ${
+                className={`px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 font-medium text-xs sm:text-sm rounded-lg transition whitespace-nowrap ${
                   filter === 'all' ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
@@ -353,7 +353,7 @@ function Workspace() {
               </button>
               <button
                 onClick={() => setFilter('published')}
-                className={`px-4 py-2 font-medium rounded-lg transition ${
+                className={`px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 font-medium text-xs sm:text-sm rounded-lg transition whitespace-nowrap ${
                   filter === 'published' ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
@@ -361,7 +361,7 @@ function Workspace() {
               </button>
               <button
                 onClick={() => setFilter('draft')}
-                className={`px-4 py-2 font-medium rounded-lg transition ${
+                className={`px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 font-medium text-xs sm:text-sm rounded-lg transition whitespace-nowrap ${
                   filter === 'draft' ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
@@ -400,13 +400,13 @@ function Workspace() {
               )}
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {filteredForms.map((form) => (
                 <div
                   key={form.id}
-                  className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200"
+                  className="bg-white rounded-lg sm:rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-200"
                 >
-                  <div className="p-6">
+                  <div className="p-4 sm:p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex-1">
                         <h3 className="text-lg font-semibold text-gray-900 mb-1 truncate">
@@ -443,35 +443,35 @@ function Workspace() {
                       </span>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-1.5 sm:gap-2">
                       <button
                         onClick={() => navigate(`/workspace/forms/${form.id}`)}
-                        className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition"
+                        className="flex-1 px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium text-xs sm:text-sm rounded-lg transition"
                       >
                         {t('edit')}
                       </button>
                       <button
                         onClick={() => navigate(`/workspace/forms/${form.id}/responses`)}
-                        className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-lg transition"
+                        className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium rounded-lg transition"
                         title="View responses"
                       >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                         </svg>
                       </button>
                       <button
                         onClick={() => window.open(`/f/${form.slug}`, '_blank')}
                         disabled={!form.isPublished}
-                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition disabled:opacity-50"
+                        className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition disabled:opacity-50"
                         title="View form"
                       >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                         </svg>
                       </button>
                       <div className="relative group">
-                        <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button className="px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                           </svg>
                         </button>

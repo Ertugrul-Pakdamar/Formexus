@@ -34,20 +34,20 @@ function Features() {
   ]
 
   return (
-    <section className="py-20 px-4 bg-white">
+    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center text-gray-900 mb-8 sm:mb-12 lg:mb-16 px-2">
           {t('buildFormsThat')} <span className="text-purple-600">{t('workForYou')}</span>
         </h2>
         
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="p-8 rounded-xl bg-purple-50 hover:bg-purple-100 transition-all duration-300 transform hover:-translate-y-2 shadow-md hover:shadow-xl">
-              <div className="w-14 h-14 bg-purple-600 rounded-lg flex items-center justify-center mb-4">
+            <div key={index} className="p-6 sm:p-8 rounded-xl bg-purple-50 hover:bg-purple-100 transition-all duration-300 transform hover:-translate-y-2 shadow-md hover:shadow-xl">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 bg-purple-600 rounded-lg flex items-center justify-center mb-3 sm:mb-4">
                 {feature.icon}
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">{t(feature.titleKey)}</h3>
-              <p className="text-gray-600 leading-relaxed">{t(feature.descriptionKey)}</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">{t(feature.titleKey)}</h3>
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{t(feature.descriptionKey)}</p>
             </div>
           ))}
         </div>

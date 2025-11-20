@@ -69,25 +69,25 @@ function HowItWorks() {
   ]
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-br from-purple-50 to-white">
+    <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-purple-50 to-white">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-16">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center text-gray-900 mb-8 sm:mb-12 lg:mb-16 px-2">
           {t('howIt')} <span className="text-purple-600">{t('works')}</span>
         </h2>
         
-        <div className="space-y-12">
+        <div className="space-y-8 sm:space-y-12">
           {steps.map((step) => (
-            <div key={step.number} className={`flex flex-col ${step.reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-8`}>
-              <div className="flex-1">
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="w-12 h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
+            <div key={step.number} className={`flex flex-col ${step.reverse ? 'md:flex-row-reverse' : 'md:flex-row'} items-center gap-4 sm:gap-6 lg:gap-8`}>
+              <div className="flex-1 w-full">
+                <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                  <span className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-600 text-white rounded-full flex items-center justify-center text-lg sm:text-xl font-bold flex-shrink-0">
                     {step.number}
                   </span>
-                  <h3 className="text-3xl font-bold text-gray-900">{t(step.titleKey)}</h3>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">{t(step.titleKey)}</h3>
                 </div>
-                <p className="text-lg text-gray-600 leading-relaxed">{t(step.descriptionKey)}</p>
+                <p className="text-sm sm:text-base lg:text-lg text-gray-600 leading-relaxed">{t(step.descriptionKey)}</p>
               </div>
-              <div className="flex-1 w-full h-64 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg flex items-center justify-center hover:shadow-2xl transition-shadow duration-300">
+              <div className="flex-1 w-full h-48 sm:h-56 md:h-64 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg sm:rounded-xl shadow-lg flex items-center justify-center hover:shadow-2xl transition-shadow duration-300">
                 {step.icon}
               </div>
             </div>

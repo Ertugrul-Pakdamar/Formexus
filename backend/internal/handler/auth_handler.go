@@ -6,6 +6,7 @@ import (
 
 	"github.com/formexus/backend/internal/dto"
 	"github.com/formexus/backend/internal/service"
+	"github.com/formexus/backend/pkg/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -32,6 +33,10 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 
 	// Log incoming request
 	log.Printf("Register request: email=%s, name=%s", req.Email, req.Name)
+
+	// Sanitize inputs to prevent XSS
+	req.Email = utils.SanitizeEmail(req.Email)
+	req.Name = utils.SanitizeInput(req.Name)
 
 	// Validate request
 	if err := validateRegisterRequest(&req); err != nil {
@@ -116,6 +121,12 @@ func validateRegisterRequest(req *dto.RegisterRequest) error {
 	}
 	if len(req.Name) < 2 {
 		return fiber.NewError(fiber.StatusBadRequest, "Name must be at least 2 characters")
+	}
+	if len(req.Name) > 100 {
+		return fiber.NewError(fiber.StatusBadRequest, "Name must be less than 100 characters")
+	}
+	if !utils.ValidateName(req.Name) {
+		return fiber.NewError(fiber.StatusBadRequest, "Name contains invalid characters")
 	}
 	return nil
 }
