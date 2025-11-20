@@ -52,7 +52,7 @@ func main() {
 	app.Use(recover.New())
 	app.Use(middleware.Logger())
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     "http://localhost:5173,https://formexus.onrender.com",
+		AllowOrigins:     "http://localhost:5173,https://formexus.onrender.com,https://formexus-51vy.onrender.com",
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
 		AllowHeaders:     "Origin,Content-Type,Accept,Authorization",
 		AllowCredentials: true,
