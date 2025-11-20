@@ -110,100 +110,50 @@
 
 ### Installation
 
-1. **Clone the repository**
+```bash
+# 1. Clone repository
+git clone https://github.com/Ertugrul-Pakdamar/Formexus.git
+cd Formexus
 
-   ```bash
-   git clone https://github.com/Ertugrul-Pakdamar/Formexus.git
-   cd Formexus
-   ```
+# 2. Setup backend
+cd backend
+cp .env.example .env
+# Edit .env and configure your settings (see SETUP.md)
+cd docker && bash clean_setup.sh && cd ..
+go mod download
+make run
 
-2. **Start MongoDB**
+# 3. Setup frontend (new terminal)
+cd frontend
+cp .env.example .env
+# Edit .env and add VITE_API_URL=http://localhost:8080/api
+npm install
+npm run dev
+```
 
-   ```bash
-   cd backend/docker
-   bash clean_setup.sh
-   cd ../..
-   ```
+**📖 For detailed setup instructions (including production deployment), see [SETUP.md](./SETUP.md)**
 
-3. **Setup Backend**
+### Environment Setup
 
-   ```bash
-   cd backend
-   cp .env.example .env
-   # Edit .env and add your Google OAuth credentials (see Google OAuth Setup below)
-   go mod download
-   make run
-   ```
+Both backend and frontend need environment variables. Copy the example files and configure:
 
-4. **Setup Frontend**
+**Backend:**
 
-   ```bash
-   cd frontend
-   npm install
-   # Create .env file and add VITE_GOOGLE_CLIENT_ID (see Google OAuth Setup below)
-   npm run dev
-   ```
+```bash
+cd backend
+cp .env.example .env
+```
 
-5. **Open your browser**
-   ```
-   Frontend: http://localhost:5173
-   Backend:  http://localhost:8080
-   ```
+**Frontend:**
 
-### 🔐 Google OAuth Setup
+```bash
+cd frontend
+cp .env.example .env
+```
 
-To enable Google Sign-In, follow the detailed setup guide: **[Google OAuth Setup Guide](./GOOGLE_OAUTH_SETUP.md)**
+**⚠️ Important:** Never commit `.env` files to Git! They contain sensitive data.
 
-**Quick Summary:**
-
-1. **Go to [Google Cloud Console](https://console.cloud.google.com/)**
-
-2. **Create a new project** (or select existing)
-
-3. **Enable Google+ API**
-
-   - Go to "APIs & Services" > "Library"
-   - Search for "Google+ API" and enable it
-
-4. **Create OAuth 2.0 Credentials**
-
-   - Go to "APIs & Services" > "Credentials"
-   - Click "Create Credentials" > "OAuth client ID"
-   - Select "Web application"
-   - Add authorized JavaScript origins:
-     - `http://localhost:5173`
-     - `http://localhost:8080`
-   - Add authorized redirect URIs:
-     - `http://localhost:5173`
-   - Click "Create"
-
-5. **Copy Client ID**
-
-6. **Update Environment Variables**
-
-   **Backend (.env):**
-
-   ```env
-   GOOGLE_CLIENT_ID=your-google-client-id-here
-   GOOGLE_CLIENT_SECRET=your-google-client-secret-here
-   ```
-
-   **Frontend (.env):**
-
-   ```env
-   VITE_GOOGLE_CLIENT_ID=your-google-client-id-here
-   ```
-
-7. **Restart both servers** to apply the changes
-
-### 🎬 First Steps
-
-1. **Create an Account** - Click "Create a Form" on the landing page
-2. **Choose a Template** - Select from 6 pre-built templates or start blank
-3. **Design Your Form** - Add fields, customize theme, set options
-4. **Publish** - Click "Publish" to make your form live
-5. **Share** - Copy the public link and share it anywhere
-6. **Collect Responses** - View submissions in the Responses tab
+See [SETUP.md](./SETUP.md) for detailed configuration guide.
 
 ---
 
@@ -279,26 +229,32 @@ Formexus/
 
 ## 🔧 Configuration
 
-### Backend (.env)
+### Backend Environment Variables
+
+Create `backend/.env` from `backend/.env.example`:
 
 ```env
 PORT=8080
 ENV=development
-
 MONGODB_URI=mongodb://localhost:27017/formexus
 MONGODB_DATABASE=formexus
-
-JWT_SECRET=your-super-secret-jwt-key
+JWT_SECRET=your-random-secret-key
 JWT_EXPIRATION=24h
-
 FRONTEND_URL=http://localhost:5173
+GOOGLE_CLIENT_ID=optional
+GOOGLE_CLIENT_SECRET=optional
 ```
 
-### Frontend (Environment)
+### Frontend Environment Variables
+
+Create `frontend/.env` from `frontend/.env.example`:
 
 ```env
 VITE_API_URL=http://localhost:8080/api
+VITE_GOOGLE_CLIENT_ID=optional
 ```
+
+**📖 For production deployment and detailed configuration, see [SETUP.md](./SETUP.md)**
 
 ---
 
@@ -357,66 +313,23 @@ DELETE /api/submissions/:id        # Delete submission
 
 ## ☁️ Deployment
 
-### 🚀 Deploy to Production
+Formexus can be easily deployed to cloud platforms. We provide detailed guides for:
 
-Deploy Formexus to production in ~30 minutes using free tier services:
+- **Render.com** (Free tier available)
+- **MongoDB Atlas** (Free M0 cluster)
+- **Google OAuth** production setup
 
-#### Step 1: MongoDB Atlas (5 min)
+**📖 See [SETUP.md](./SETUP.md) for complete deployment guide with step-by-step instructions.**
 
-1. Create account at [MongoDB Atlas](https://cloud.mongodb.com)
-2. Create M0 Free cluster (Region: Frankfurt)
-3. Create database user and save password
-4. Network Access → Allow 0.0.0.0/0
-5. Get connection string and add `/formexus` before `?`:
-   ```
-   mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/formexus?retryWrites=true&w=majority
-   ```
+### Quick Deploy Summary
 
-#### Step 2: Render.com Backend (10 min)
+1. **Database:** MongoDB Atlas M0 (Free)
+2. **Backend:** Render.com Web Service (Free)
+3. **Frontend:** Render.com Web Service (Free)
+4. **Total Cost:** $0/month
+5. **Setup Time:** ~30 minutes
 
-1. Sign up at [Render.com](https://render.com) with GitHub
-2. New Web Service → Connect Formexus repo
-3. Configure:
-   ```
-   Name: formexus-backend
-   Region: Frankfurt
-   Root Directory: backend
-   Build: go build -o server cmd/server/main.go
-   Start: ./server
-   ```
-4. Add environment variables:
-   ```
-   MONGODB_URI=<your-atlas-connection-string>
-   MONGODB_DATABASE=formexus
-   JWT_SECRET=<click Generate>
-   PORT=8080
-   ENV=production
-   ```
-
-#### Step 3: Render.com Frontend (5 min)
-
-1. New Static Site → Formexus repo
-2. Configure:
-   ```
-   Name: formexus-frontend
-   Root Directory: frontend
-   Build: npm install && npm run build
-   Publish: dist
-   ```
-3. Environment variables:
-   ```
-   VITE_API_URL=https://your-backend.onrender.com/api
-   ```
-
-#### Step 4: Update Backend (2 min)
-
-Update backend environment with frontend URL:
-
-```
-FRONTEND_URL=https://your-frontend.onrender.com
-```
-
-**Total: FREE ($0/month)** • **Time: 30 minutes** • See `render.yaml` for automated config
+For automated deployment configuration, see `render.yaml` in the project root.
 
 ---
 

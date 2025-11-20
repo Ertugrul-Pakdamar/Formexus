@@ -1,5 +1,15 @@
 # Render.com Deployment Configuration
-# Note: This file provides a template. Some values must be set manually in Render dashboard.
+#
+# IMPORTANT: This file provides a template for automated deployment.
+# You MUST set sensitive values manually in the Render dashboard:
+# - MONGODB_URI
+# - JWT_SECRET (use "Generate" button)
+# - GOOGLE_CLIENT_ID
+# - GOOGLE_CLIENT_SECRET
+# - FRONTEND_URL (set after frontend deployment)
+# - VITE_API_URL (set after backend deployment)
+#
+# See SETUP.md for detailed deployment instructions.
 
 services:
   # Backend Service (Go/Fiber)
