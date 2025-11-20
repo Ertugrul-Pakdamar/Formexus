@@ -359,34 +359,64 @@ DELETE /api/submissions/:id        # Delete submission
 
 ### 🚀 Deploy to Production
 
-Ready to share your forms with the world? Follow our comprehensive deployment guide:
+Deploy Formexus to production in ~30 minutes using free tier services:
 
-**📖 [Complete Deployment Guide](./DEPLOYMENT.md)**
+#### Step 1: MongoDB Atlas (5 min)
 
-**Quick Deploy Options:**
+1. Create account at [MongoDB Atlas](https://cloud.mongodb.com)
+2. Create M0 Free cluster (Region: Frankfurt)
+3. Create database user and save password
+4. Network Access → Allow 0.0.0.0/0
+5. Get connection string and add `/formexus` before `?`:
+   ```
+   mongodb+srv://user:password@cluster.mongodb.net/formexus?retryWrites=true&w=majority
+   ```
 
-1. **Render.com** (Recommended - Free Tier)
+#### Step 2: Render.com Backend (10 min)
 
-   - ✅ Easy setup (~30 minutes)
-   - ✅ Automatic SSL
-   - ✅ GitHub integration
-   - ✅ Free MongoDB Atlas
+1. Sign up at [Render.com](https://render.com) with GitHub
+2. New Web Service → Connect Formexus repo
+3. Configure:
+   ```
+   Name: formexus-backend
+   Region: Frankfurt
+   Root Directory: backend
+   Build: go build -o server cmd/server/main.go
+   Start: ./server
+   ```
+4. Add environment variables:
+   ```
+   MONGODB_URI=<your-atlas-connection-string>
+   MONGODB_DATABASE=formexus
+   JWT_SECRET=<click Generate>
+   PORT=8080
+   ENV=production
+   ```
 
-2. **Vercel + Railway**
+#### Step 3: Render.com Frontend (5 min)
 
-   - Frontend on Vercel
-   - Backend on Railway
-   - Good for scaling
+1. New Static Site → Formexus repo
+2. Configure:
+   ```
+   Name: formexus-frontend
+   Root Directory: frontend
+   Build: npm install && npm run build
+   Publish: dist
+   ```
+3. Environment variables:
+   ```
+   VITE_API_URL=https://your-backend.onrender.com/api
+   ```
 
-3. **DigitalOcean App Platform**
-   - Professional deployment
-   - Single platform solution
+#### Step 4: Update Backend (2 min)
 
-### Deployment Files
+Update backend environment with frontend URL:
 
-- `render.yaml` - Automated Render deployment config
-- `DEPLOYMENT.md` - Step-by-step deployment guide
-- `.env.production.example` - Production environment template
+```
+FRONTEND_URL=https://your-frontend.onrender.com
+```
+
+**Total: FREE ($0/month)** • **Time: 30 minutes** • See `render.yaml` for automated config
 
 ---
 
