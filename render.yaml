@@ -1,5 +1,5 @@
 # Render.com Deployment Configuration
-# This file can be used for automated deployment on Render
+# Note: This file provides a template. Some values must be set manually in Render dashboard.
 
 services:
   # Backend Service (Go/Fiber)
@@ -31,23 +31,14 @@ services:
       - key: GOOGLE_CLIENT_SECRET
         sync: false # Set manually
       - key: GOOGLE_REDIRECT_URL
-        fromService:
-          type: web
-          name: formexus-backend
-          envVarKey: RENDER_EXTERNAL_URL
-          property: url
-          format: "${url}/api/auth/google/callback"
+        sync: false # Set manually: https://your-backend.onrender.com/api/auth/google/callback
       - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: formexus-frontend
-          property: url
+        sync: false # Set manually: https://your-frontend.onrender.com
 
   # Frontend Service (React/Vite)
   - type: web
     name: formexus-frontend
     runtime: static
-    region: frankfurt
     plan: free
     branch: main
     rootDir: frontend
@@ -55,10 +46,7 @@ services:
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: formexus-backend
-          property: url
-          format: "${url}/api"
+        sync: false # Set manually: https://your-backend.onrender.com/api
       - key: VITE_GOOGLE_CLIENT_ID
         sync: false # Set manually in Render dashboard
+
