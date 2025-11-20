@@ -12,7 +12,7 @@
   [![Fiber](https://img.shields.io/badge/Fiber-2.52-00ACD7?style=flat&logo=go)](https://gofiber.io/)
   [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   
-  **🌐 [Live Demo](https://formexus-51vy.onrender.com/) | [Backend API](https://formexus-backend-s6vu.onrender.com/health)**
+  **🌐 [Live Demo](https://formexus.onrender.com) | [Backend API](https://formexus-backend-s6vu.onrender.com/health)**
   
   [🚀 Quick Start](#-quick-start) | [📖 Features](#-features) | [🏭️ Architecture](#️-architecture) | [☁️ Deploy](#️-deployment)
   
@@ -26,7 +26,7 @@
 
 ### 🌐 Live Demo
 
-**Try it now:** [https://formexus-51vy.onrender.com/](https://formexus-51vy.onrender.com/)
+**Try it now:** [https://formexus.onrender.com](https://formexus.onrender.com)
 
 _Note: The free tier may take 30-60 seconds to wake up on first visit._
 
@@ -314,7 +314,7 @@ Formexus is **live in production** and can be easily deployed to cloud platforms
 
 ### 🌐 Production URLs
 
-- **Frontend:** [https://formexus-51vy.onrender.com/](https://formexus-51vy.onrender.com/)
+- **Frontend:** [https://formexus.onrender.com/](https://formexus.onrender.com/)
 - **Backend API:** [https://formexus-backend-s6vu.onrender.com/health](https://formexus-backend-s6vu.onrender.com/health)
 - **Database:** MongoDB Atlas (Free M0 Cluster)
 
