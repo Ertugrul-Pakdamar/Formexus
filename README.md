@@ -29,6 +29,7 @@
 - 🚀 **Real-time Auto-save** - Never lose your work
 - 📊 **Smart Analytics** - CSV export and response tracking
 - 🔒 **Secure** - JWT authentication and enterprise-grade security
+- 🔑 **Google OAuth** - Sign in with Google for seamless authentication
 - ⚡ **Lightning Fast** - Built with Go and React for optimal performance
 - 🎭 **Template Library** - 6+ pre-built templates to get started quickly
 
@@ -69,6 +70,15 @@
 - Language switcher on all pages
 - Template fields translate automatically
 - User-generated content remains unchanged
+
+### 🔐 Authentication & Security
+
+- **Email/Password Authentication** - Traditional sign-in method
+- **Google OAuth 2.0** - One-click sign-in with Google
+- **JWT Tokens** - Secure session management
+- **bcrypt Password Hashing** - Industry-standard password protection
+- **Protected Routes** - Middleware-based authorization
+- **CORS Protection** - Cross-origin security
 
 ### 📊 Response Management
 
@@ -120,7 +130,7 @@
    ```bash
    cd backend
    cp .env.example .env
-   # Edit .env if needed
+   # Edit .env and add your Google OAuth credentials (see Google OAuth Setup below)
    go mod download
    make run
    ```
@@ -130,6 +140,7 @@
    ```bash
    cd frontend
    npm install
+   # Create .env file and add VITE_GOOGLE_CLIENT_ID (see Google OAuth Setup below)
    npm run dev
    ```
 
@@ -138,6 +149,52 @@
    Frontend: http://localhost:5173
    Backend:  http://localhost:8080
    ```
+
+### 🔐 Google OAuth Setup
+
+To enable Google Sign-In, follow the detailed setup guide: **[Google OAuth Setup Guide](./GOOGLE_OAUTH_SETUP.md)**
+
+**Quick Summary:**
+
+1. **Go to [Google Cloud Console](https://console.cloud.google.com/)**
+
+2. **Create a new project** (or select existing)
+
+3. **Enable Google+ API**
+
+   - Go to "APIs & Services" > "Library"
+   - Search for "Google+ API" and enable it
+
+4. **Create OAuth 2.0 Credentials**
+
+   - Go to "APIs & Services" > "Credentials"
+   - Click "Create Credentials" > "OAuth client ID"
+   - Select "Web application"
+   - Add authorized JavaScript origins:
+     - `http://localhost:5173`
+     - `http://localhost:8080`
+   - Add authorized redirect URIs:
+     - `http://localhost:5173`
+   - Click "Create"
+
+5. **Copy Client ID**
+
+6. **Update Environment Variables**
+
+   **Backend (.env):**
+
+   ```env
+   GOOGLE_CLIENT_ID=your-google-client-id-here
+   GOOGLE_CLIENT_SECRET=your-google-client-secret-here
+   ```
+
+   **Frontend (.env):**
+
+   ```env
+   VITE_GOOGLE_CLIENT_ID=your-google-client-id-here
+   ```
+
+7. **Restart both servers** to apply the changes
 
 ### 🎬 First Steps
 
@@ -307,12 +364,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 

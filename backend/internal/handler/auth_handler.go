@@ -1,12 +1,14 @@
 package handler
 
 import (
+	"context"
 	"log"
 	"strings"
 
 	"github.com/formexus/backend/internal/dto"
 	"github.com/formexus/backend/internal/service"
 	"github.com/gofiber/fiber/v2"
+	"google.golang.org/api/oauth2/v2"
 )
 
 type AuthHandler struct {
@@ -101,14 +103,50 @@ func (h *AuthHandler) GoogleAuth(c *fiber.Ctx) error {
 		})
 	}
 
-	// TODO: Verify Google token and extract user info
-	// For now, this is a placeholder
-	// In production, you should verify the token with Google's API
+	// Verify Google token
+	ctx := context.Background()
+	oauth2Service, err := oauth2.NewService(ctx)
+	if err != nil {
+		log.Printf("Failed to create oauth2 service: %v", err)
+		return c.Status(fiber.StatusInternalServerError).JSON(dto.ErrorResponse{
+			Error:   "Failed to verify token",
+			Message: "Internal server error",
+		})
+	}
 
-	return c.Status(fiber.StatusNotImplemented).JSON(dto.ErrorResponse{
-		Error:   "Not implemented",
-		Message: "Google OAuth integration pending",
-	})
+	tokenInfo, err := oauth2Service.Tokeninfo().IdToken(req.Token).Do()
+	if err != nil {
+		log.Printf("Failed to verify Google token: %v", err)
+		return c.Status(fiber.StatusUnauthorized).JSON(dto.ErrorResponse{
+			Error:   "Invalid token",
+			Message: "Failed to verify Google token",
+		})
+	}
+
+	// Extract user info from token
+	googleID := tokenInfo.UserId
+	email := tokenInfo.Email
+	name := tokenInfo.Email // Default to email
+
+	// Try to extract name from email
+	if tokenInfo.Email != "" {
+		parts := strings.Split(tokenInfo.Email, "@")
+		if len(parts) > 0 {
+			name = parts[0]
+		}
+	}
+
+	// Authenticate user
+	resp, err := h.authService.GoogleAuth(googleID, email, name)
+	if err != nil {
+		log.Printf("Google auth error: %v", err)
+		return c.Status(fiber.StatusInternalServerError).JSON(dto.ErrorResponse{
+			Error:   "Authentication failed",
+			Message: err.Error(),
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(resp)
 }
 
 // GetMe returns current user info
