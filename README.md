@@ -369,7 +369,7 @@ Deploy Formexus to production in ~30 minutes using free tier services:
 4. Network Access → Allow 0.0.0.0/0
 5. Get connection string and add `/formexus` before `?`:
    ```
-   mongodb+srv://user:password@cluster.mongodb.net/formexus?retryWrites=true&w=majority
+   mongodb+srv://YOUR_USERNAME:YOUR_PASSWORD@YOUR_CLUSTER.mongodb.net/formexus?retryWrites=true&w=majority
    ```
 
 #### Step 2: Render.com Backend (10 min)
