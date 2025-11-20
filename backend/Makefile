@@ -19,7 +19,7 @@ clean: ## Clean build artifacts
 	rm -rf bin/
 
 docker-mongo: ## Start MongoDB in Docker
-	docker run -d -p 27017:27017 --name formexus-mongo mongo:latest
+	./backend/docker/clean_setup.sh
 
 docker-mongo-stop: ## Stop MongoDB Docker container
 	docker stop formexus-mongo && docker rm formexus-mongo

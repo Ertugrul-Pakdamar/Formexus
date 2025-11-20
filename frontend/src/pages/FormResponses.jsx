@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import formAPI from '../services/formApi'
 import Toast from '../components/Toast'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 
 export default function FormResponses() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const [form, setForm] = useState(null)
   const [submissions, setSubmissions] = useState([])
   const [loading, setLoading] = useState(true)
@@ -26,7 +29,7 @@ export default function FormResponses() {
       setSubmissions(submissionsData.submissions || [])
     } catch (error) {
       console.error('Error loading data:', error)
-      setToast({ isOpen: true, message: 'Failed to load responses', type: 'error' })
+      setToast({ isOpen: true, message: t('failedToLoadResponses'), type: 'error' })
     } finally {
       setLoading(false)
     }
@@ -65,7 +68,7 @@ export default function FormResponses() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading responses...</p>
+          <p className="mt-4 text-gray-600">{t('loadingResponses')}</p>
         </div>
       </div>
     )
@@ -90,16 +93,17 @@ export default function FormResponses() {
               </button>
               <div>
                 <h1 className="text-xl font-semibold text-gray-900">{form.title}</h1>
-                <p className="text-sm text-gray-500">{submissions.length} responses</p>
+                <p className="text-sm text-gray-500">{submissions.length} {t('responses')}</p>
               </div>
             </div>
 
             <div className="flex items-center space-x-3">
+              <LanguageSwitcher />
               <button
                 onClick={() => navigate(`/workspace/forms/${id}`)}
                 className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg font-medium transition"
               >
-                Edit Form
+                {t('editForm')}
               </button>
               <button
                 onClick={exportToCSV}
@@ -109,7 +113,7 @@ export default function FormResponses() {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
-                Export CSV
+                {t('exportCSV')}
               </button>
             </div>
           </div>
@@ -125,18 +129,18 @@ export default function FormResponses() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No responses yet</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('noResponses')}</h3>
             <p className="text-gray-600 mb-6">
-              Share your form to start collecting responses
+              {t('shareFormToCollect')}
             </p>
             <button
               onClick={() => {
                 navigator.clipboard.writeText(`${window.location.origin}/f/${form.slug}`)
-                setToast({ isOpen: true, message: 'Form link copied!', type: 'success' })
+                setToast({ isOpen: true, message: t('formLinkCopied'), type: 'success' })
               }}
               className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
-              Copy Form Link
+              {t('copyLink')}
             </button>
           </div>
         ) : (
@@ -146,7 +150,7 @@ export default function FormResponses() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Date
+                      {t('date')}
                     </th>
                     {form.fields.filter(f => f.type !== 'section').map(field => (
                       <th key={field.id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">

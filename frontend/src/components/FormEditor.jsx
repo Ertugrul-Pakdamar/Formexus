@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import FieldEditor from './FieldEditor'
+import { useLanguage } from '../context/LanguageContext'
 
 const FIELD_TYPES = [
   { 
@@ -80,6 +81,7 @@ const FIELD_TYPES = [
 ]
 
 export default function FormEditor({ form, onChange }) {
+  const { t } = useLanguage()
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(null)
   const [showFieldMenu, setShowFieldMenu] = useState(false)
 
@@ -147,11 +149,11 @@ export default function FormEditor({ form, onChange }) {
       {/* Form Description */}
       <div className="bg-white rounded-lg shadow-sm p-6 border">
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">{t('description')}</label>
           <textarea
             value={form.description}
             onChange={(e) => onChange({ ...form, description: e.target.value })}
-            placeholder="Add a description for your form..."
+            placeholder={t('addDescription')}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
             rows={3}
           />
@@ -188,7 +190,7 @@ export default function FormEditor({ form, onChange }) {
           onClick={() => setShowFieldMenu(!showFieldMenu)}
           className="w-full py-4 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-indigo-500 hover:text-indigo-600 transition font-medium"
         >
-          + Add Field
+          + {t('addField')}
         </button>
 
         {showFieldMenu && (
@@ -211,7 +213,7 @@ export default function FormEditor({ form, onChange }) {
 
       {/* Settings */}
       <div className="bg-white rounded-lg shadow-sm p-6 border">
-        <h3 className="text-lg font-semibold mb-4">Form Settings</h3>
+        <h3 className="text-lg font-semibold mb-4">{t('formSettings')}</h3>
         
         <div className="space-y-4">
           <label className="flex items-center">
@@ -226,7 +228,7 @@ export default function FormEditor({ form, onChange }) {
               }
               className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
             />
-            <span className="ml-2 text-sm text-gray-700">Allow multiple submissions</span>
+            <span className="ml-2 text-sm text-gray-700">{t('allowMultipleSubmissions')}</span>
           </label>
 
           <label className="flex items-center">
@@ -241,7 +243,7 @@ export default function FormEditor({ form, onChange }) {
               }
               className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
             />
-            <span className="ml-2 text-sm text-gray-700">Require login to submit</span>
+            <span className="ml-2 text-sm text-gray-700">{t('requireLogin')}</span>
           </label>
 
           <label className="flex items-center">
@@ -256,12 +258,12 @@ export default function FormEditor({ form, onChange }) {
               }
               className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
             />
-            <span className="ml-2 text-sm text-gray-700">Show progress bar</span>
+            <span className="ml-2 text-sm text-gray-700">{t('showProgressBar')}</span>
           </label>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Confirmation Message
+              {t('confirmationMessage')}
             </label>
             <input
               type="text"

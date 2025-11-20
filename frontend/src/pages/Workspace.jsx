@@ -141,7 +141,7 @@ function Workspace() {
       navigate(`/workspace/forms/${newForm.id}`)
     } catch (error) {
       console.error('Error creating form:', error)
-      setToast({ isOpen: true, message: 'Failed to create form', type: 'error' })
+      setToast({ isOpen: true, message: t('failedToCreate'), type: 'error' })
     }
   }
 
@@ -149,10 +149,10 @@ function Workspace() {
     try {
       await formAPI.deleteForm(confirmDialog.formId)
       setForms(forms.filter((f) => f.id !== confirmDialog.formId))
-      setToast({ isOpen: true, message: 'Form deleted successfully', type: 'success' })
+      setToast({ isOpen: true, message: t('formDeleted'), type: 'success' })
     } catch (error) {
       console.error('Error deleting form:', error)
-      setToast({ isOpen: true, message: 'Failed to delete form', type: 'error' })
+      setToast({ isOpen: true, message: t('failedToDelete'), type: 'error' })
     }
   }
 
@@ -160,10 +160,10 @@ function Workspace() {
     try {
       const duplicated = await formAPI.duplicateForm(id)
       setForms([duplicated, ...forms])
-      setToast({ isOpen: true, message: 'Form duplicated successfully', type: 'success' })
+      setToast({ isOpen: true, message: t('formDuplicated'), type: 'success' })
     } catch (error) {
       console.error('Error duplicating form:', error)
-      setToast({ isOpen: true, message: 'Failed to duplicate form', type: 'error' })
+      setToast({ isOpen: true, message: t('failedToDuplicate'), type: 'error' })
     }
   }
 
@@ -227,7 +227,7 @@ function Workspace() {
         {/* My Forms Section */}
         <section>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">My Forms</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t('myForms')}</h2>
             <div className="flex gap-2">
               <button
                 onClick={() => setFilter('all')}
@@ -235,7 +235,7 @@ function Workspace() {
                   filter === 'all' ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                All ({forms.length})
+                {t('all')} ({forms.length})
               </button>
               <button
                 onClick={() => setFilter('published')}
@@ -243,7 +243,7 @@ function Workspace() {
                   filter === 'published' ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                Published ({forms.filter((f) => f.isPublished).length})
+                {t('published')} ({forms.filter((f) => f.isPublished).length})
               </button>
               <button
                 onClick={() => setFilter('draft')}
@@ -251,7 +251,7 @@ function Workspace() {
                   filter === 'draft' ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-100'
                 }`}
               >
-                Draft ({forms.filter((f) => !f.isPublished).length})
+                {t('draft')} ({forms.filter((f) => !f.isPublished).length})
               </button>
             </div>
           </div>
@@ -259,7 +259,7 @@ function Workspace() {
           {loading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-              <p className="mt-4 text-gray-600">Loading forms...</p>
+              <p className="mt-4 text-gray-600">{t('loadingForm')}</p>
             </div>
           ) : filteredForms.length === 0 ? (
             <div className="bg-white rounded-xl shadow-sm p-12 text-center">
@@ -269,19 +269,19 @@ function Workspace() {
                 </svg>
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {filter === 'all' ? 'No forms yet' : `No ${filter} forms`}
+                {filter === 'all' ? t('noFormsYet') : filter === 'published' ? t('noPublishedForms') : t('noDraftForms')}
               </h3>
               <p className="text-gray-600 mb-6">
                 {filter === 'all'
-                  ? 'Create your first form to get started'
-                  : `You don't have any ${filter} forms yet`}
+                  ? t('createFirstForm')
+                  : filter === 'published' ? t('noPublishedFormsDesc') : t('noDraftFormsDesc')}
               </p>
               {filter === 'all' && (
                 <button
                   onClick={() => createNewForm()}
                   className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
-                  Create Your First Form
+                  {t('createYourFirstForm')}
                 </button>
               )}
             </div>
@@ -304,11 +304,11 @@ function Workspace() {
                       </div>
                       {form.isPublished ? (
                         <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
-                          Published
+                          {t('published')}
                         </span>
                       ) : (
                         <span className="px-2 py-1 text-xs font-medium text-gray-600 bg-gray-100 rounded-full">
-                          Draft
+                          {t('draft')}
                         </span>
                       )}
                     </div>
@@ -334,7 +334,7 @@ function Workspace() {
                         onClick={() => navigate(`/workspace/forms/${form.id}`)}
                         className="flex-1 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition"
                       >
-                        Edit
+                        {t('edit')}
                       </button>
                       <button
                         onClick={() => navigate(`/workspace/forms/${form.id}/responses`)}
@@ -366,22 +366,22 @@ function Workspace() {
                             onClick={() => duplicateForm(form.id)}
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                           >
-                            Duplicate
+                            {t('duplicate')}
                           </button>
                           <button
                             onClick={() => {
                               navigator.clipboard.writeText(`${window.location.origin}/f/${form.slug}`)
-                              setToast({ isOpen: true, message: 'Link copied to clipboard!', type: 'success' })
+                              setToast({ isOpen: true, message: t('linkCopied'), type: 'success' })
                             }}
                             className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
                           >
-                            Copy link
+                            {t('copyLink')}
                           </button>
                           <button
                             onClick={() => setConfirmDialog({ isOpen: true, formId: form.id })}
                             className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50"
                           >
-                            Delete
+                            {t('delete')}
                           </button>
                         </div>
                       </div>
@@ -399,10 +399,10 @@ function Workspace() {
         isOpen={confirmDialog.isOpen}
         onClose={() => setConfirmDialog({ isOpen: false, formId: null })}
         onConfirm={deleteForm}
-        title="Delete Form"
-        message="Are you sure you want to delete this form? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
+        title={t('confirmDelete')}
+        message={t('confirmDeleteMsg')}
+        confirmText={t('delete')}
+        cancelText={t('cancel')}
         type="danger"
       />
 

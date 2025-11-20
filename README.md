@@ -33,7 +33,7 @@ Formexus/
 ### 1. MongoDB Başlatma
 
 ```bash
-docker run -d -p 27017:27017 --name formexus-mongo mongo:latest
+./backend/docker/clean_setup.sh
 ```
 
 ### 2. Backend Kurulum
@@ -106,7 +106,3 @@ npm run dev       # Development server
 npm run build     # Production build
 npm run preview   # Preview production build
 ```
-
-## Lisans
-
-MIT

@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import LoginModal from './LoginModal'
+import { useLanguage } from '../context/LanguageContext'
 
 function Hero() {
+  const { t } = useLanguage()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   const scrollToFeatures = () => {
@@ -41,16 +43,16 @@ function Hero() {
 
         <div className="text-center max-w-4xl mx-auto animate-slide-up relative z-10">
           <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6">
-            Welcome to <span className="text-purple-600">Formexus</span>
+            {t('welcomeTo')} <span className="text-purple-600">Formexus</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed">
-            Create beautiful, intelligent forms in minutes. Collect responses, analyze data, and make informed decisions with our powerful form builder platform.
+            {t('heroDescription')}
           </p>
           <button 
             onClick={() => setIsLoginModalOpen(true)}
             className="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-4 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
-            Create a Form
+            {t('createForm')}
           </button>
         </div>
 

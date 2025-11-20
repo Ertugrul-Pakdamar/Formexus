@@ -1,19 +1,23 @@
+import { useLanguage } from '../context/LanguageContext'
+
 export default function ThemeCustomizer({ form, onChange }) {
+  const { t } = useLanguage()
+  
   const themeColors = [
-    { name: 'Purple', value: '#6366f1', bg: 'bg-purple-500' },
-    { name: 'Blue', value: '#3b82f6', bg: 'bg-blue-500' },
-    { name: 'Green', value: '#10b981', bg: 'bg-green-500' },
-    { name: 'Pink', value: '#ec4899', bg: 'bg-pink-500' },
-    { name: 'Indigo', value: '#4f46e5', bg: 'bg-indigo-500' },
-    { name: 'Orange', value: '#f97316', bg: 'bg-orange-500' },
+    { name: 'purple', value: '#6366f1', bg: 'bg-purple-500' },
+    { name: 'blue', value: '#3b82f6', bg: 'bg-blue-500' },
+    { name: 'green', value: '#10b981', bg: 'bg-green-500' },
+    { name: 'pink', value: '#ec4899', bg: 'bg-pink-500' },
+    { name: 'indigo', value: '#4f46e5', bg: 'bg-indigo-500' },
+    { name: 'orange', value: '#f97316', bg: 'bg-orange-500' },
   ]
 
   const backgroundColors = [
-    { name: 'White', value: '#ffffff', bg: 'bg-white', border: 'border' },
-    { name: 'Light Gray', value: '#f9fafb', bg: 'bg-gray-50' },
-    { name: 'Light Blue', value: '#eff6ff', bg: 'bg-blue-50' },
-    { name: 'Light Purple', value: '#f5f3ff', bg: 'bg-purple-50' },
-    { name: 'Light Pink', value: '#fdf2f8', bg: 'bg-pink-50' },
+    { name: 'white', value: '#ffffff', bg: 'bg-white', border: 'border' },
+    { name: 'lightGray', value: '#f9fafb', bg: 'bg-gray-50' },
+    { name: 'lightBlue', value: '#eff6ff', bg: 'bg-blue-50' },
+    { name: 'lightPurple', value: '#f5f3ff', bg: 'bg-purple-50' },
+    { name: 'lightPink', value: '#fdf2f8', bg: 'bg-pink-50' },
   ]
 
   const updateTheme = (updates) => {
@@ -29,13 +33,13 @@ export default function ThemeCustomizer({ form, onChange }) {
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Theme Customization</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('themeCustomization')}</h3>
       </div>
 
       {/* Primary Color */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-3">
-          Primary Color
+          {t('primaryColor')}
         </label>
         <div className="grid grid-cols-3 gap-3">
           {themeColors.map((color) => (
@@ -49,7 +53,7 @@ export default function ThemeCustomizer({ form, onChange }) {
               }`}
             >
               <div className={`w-6 h-6 rounded-full ${color.bg}`}></div>
-              <span className="text-sm font-medium text-gray-700">{color.name}</span>
+              <span className="text-sm font-medium text-gray-700">{t(color.name)}</span>
             </button>
           ))}
         </div>
@@ -58,7 +62,7 @@ export default function ThemeCustomizer({ form, onChange }) {
       {/* Background Color */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-3">
-          Background Color
+          {t('backgroundColor')}
         </label>
         <div className="grid grid-cols-3 gap-3">
           {backgroundColors.map((color) => (
@@ -72,7 +76,7 @@ export default function ThemeCustomizer({ form, onChange }) {
               }`}
             >
               <div className={`w-6 h-6 rounded ${color.bg} ${color.border || ''}`}></div>
-              <span className="text-sm font-medium text-gray-700">{color.name}</span>
+              <span className="text-sm font-medium text-gray-700">{t(color.name)}</span>
             </button>
           ))}
         </div>
@@ -81,7 +85,7 @@ export default function ThemeCustomizer({ form, onChange }) {
       {/* Preview */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-3">
-          Preview
+          {t('previewTheme')}
         </label>
         <div
           className="p-6 rounded-lg border-2"
@@ -91,7 +95,7 @@ export default function ThemeCustomizer({ form, onChange }) {
             className="px-6 py-3 rounded-lg text-white font-medium"
             style={{ backgroundColor: form.theme?.primaryColor || '#6366f1' }}
           >
-            Sample Button
+            {t('sampleButton')}
           </button>
           <div className="mt-4">
             <div

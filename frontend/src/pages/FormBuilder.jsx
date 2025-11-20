@@ -1,14 +1,17 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useLanguage } from '../context/LanguageContext'
 import formAPI from '../services/formApi'
 import FormEditor from '../components/FormEditor'
 import FormPreview from '../components/FormPreview'
 import ThemeCustomizer from '../components/ThemeCustomizer'
 import Toast from '../components/Toast'
+import LanguageSwitcher from '../components/LanguageSwitcher'
 
 export default function FormBuilder() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const [form, setForm] = useState(null)
   const [loading, setLoading] = useState(false)
   const [activeTab, setActiveTab] = useState('edit') // 'edit', 'preview', or 'theme'
@@ -24,7 +27,7 @@ export default function FormBuilder() {
     } else {
       // New form
       setForm({
-        title: 'Untitled Form',
+        title: t('untitledForm'),
         description: '',
         fields: [],
         settings: {
@@ -33,7 +36,7 @@ export default function FormBuilder() {
           allowMultipleSubmits: false,
           requireLogin: false,
           showProgressBar: true,
-          confirmationMessage: 'Thank you for your submission!',
+          confirmationMessage: t('defaultConfirmationMessage'),
         },
         theme: {
           primaryColor: '#6366f1',
@@ -52,7 +55,7 @@ export default function FormBuilder() {
       setLastSaved(new Date())
     } catch (error) {
       console.error('Error loading form:', error)
-      setToast({ isOpen: true, message: 'Failed to load form', type: 'error' })
+      setToast({ isOpen: true, message: t('failedToLoad'), type: 'error' })
       navigate('/workspace')
     } finally {
       setLoading(false)
@@ -102,10 +105,10 @@ export default function FormBuilder() {
         navigate(`/workspace/forms/${newForm.id}`, { replace: true })
         return
       }
-      setToast({ isOpen: true, message: 'Form saved successfully!', type: 'success' })
+      setToast({ isOpen: true, message: t('formSaved'), type: 'success' })
     } catch (error) {
       console.error('Error saving form:', error)
-      setToast({ isOpen: true, message: 'Failed to save form', type: 'error' })
+      setToast({ isOpen: true, message: t('failedToSave'), type: 'error' })
     } finally {
       setSaving(false)
     }
@@ -125,12 +128,12 @@ export default function FormBuilder() {
       setForm(updatedForm)
       setToast({ 
         isOpen: true, 
-        message: updatedForm.settings.isPublished ? 'Form published!' : 'Form unpublished',
+        message: updatedForm.settings.isPublished ? t('formPublished') : t('formUnpublished'),
         type: 'success' 
       })
     } catch (error) {
       console.error('Error publishing form:', error)
-      setToast({ isOpen: true, message: 'Failed to publish form', type: 'error' })
+      setToast({ isOpen: true, message: t('failedToPublish'), type: 'error' })
     } finally {
       setSaving(false)
     }
@@ -141,7 +144,7 @@ export default function FormBuilder() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading form...</p>
+          <p className="mt-4 text-gray-600">{t('loadingForm')}</p>
         </div>
       </div>
     )
@@ -172,20 +175,21 @@ export default function FormBuilder() {
               />
               {form.settings?.isPublished && (
                 <span className="px-2 py-1 text-xs font-medium text-green-800 bg-green-100 rounded-full">
-                  Published
+                  {t('published')}
                 </span>
               )}
             </div>
 
             <div className="flex items-center space-x-3">
+              <LanguageSwitcher />
               <div className="text-sm text-gray-500">
                 {saving ? (
                   <span className="flex items-center gap-2">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600"></div>
-                    Saving...
+                    {t('saving')}
                   </span>
                 ) : lastSaved ? (
-                  <span>Saved {new Date(lastSaved).toLocaleTimeString()}</span>
+                  <span>{t('saved')} {new Date(lastSaved).toLocaleTimeString()}</span>
                 ) : null}
               </div>
               {id && (
@@ -198,7 +202,7 @@ export default function FormBuilder() {
                       : 'bg-green-600 text-white hover:bg-green-700'
                   } transition disabled:opacity-50`}
                 >
-                  {form.settings?.isPublished ? 'Unpublish' : 'Publish'}
+                  {form.settings?.isPublished ? t('unpublish') : t('publish')}
                 </button>
               )}
             </div>
@@ -214,7 +218,7 @@ export default function FormBuilder() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Edit
+              {t('edit')}
             </button>
             <button
               onClick={() => setActiveTab('preview')}
@@ -224,7 +228,7 @@ export default function FormBuilder() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Preview
+              {t('preview')}
             </button>
             <button
               onClick={() => setActiveTab('theme')}
@@ -234,7 +238,7 @@ export default function FormBuilder() {
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
-              Theme
+              {t('theme')}
             </button>
           </div>
         </div>

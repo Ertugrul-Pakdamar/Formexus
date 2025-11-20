@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import formAPI from '../services/formApi'
 import Toast from '../components/Toast'
+import { useLanguage } from '../context/LanguageContext'
 
 export default function PublicFormView() {
   const { slug } = useParams()
+  const { t } = useLanguage()
   const [form, setForm] = useState(null)
   const [loading, setLoading] = useState(true)
   const [responses, setResponses] = useState({})
@@ -25,7 +27,7 @@ export default function PublicFormView() {
       setForm(data)
     } catch (error) {
       console.error('Error loading form:', error)
-      setToast({ isOpen: true, message: 'Form not found or not available', type: 'error' })
+      setToast({ isOpen: true, message: t('formNotFoundOrUnavailable'), type: 'error' })
     } finally {
       setLoading(false)
     }
@@ -44,7 +46,7 @@ export default function PublicFormView() {
       if (field.required && field.type !== 'section') {
         const value = responses[field.id]
         if (!value || (Array.isArray(value) && value.length === 0)) {
-          newErrors[field.id] = 'This field is required'
+          newErrors[field.id] = t('fieldRequired')
         }
       }
     })
@@ -56,7 +58,7 @@ export default function PublicFormView() {
     e.preventDefault()
     
     if (!validateForm()) {
-      setToast({ isOpen: true, message: 'Please fill in all required fields', type: 'error' })
+      setToast({ isOpen: true, message: t('fillAllRequired'), type: 'error' })
       return
     }
 
@@ -66,7 +68,7 @@ export default function PublicFormView() {
       setSubmitted(true)
     } catch (error) {
       console.error('Error submitting form:', error)
-      setToast({ isOpen: true, message: error.response?.data?.message || 'Failed to submit form', type: 'error' })
+      setToast({ isOpen: true, message: error.response?.data?.message || t('failedToSubmit'), type: 'error' })
     } finally {
       setSubmitting(false)
     }
@@ -77,7 +79,7 @@ export default function PublicFormView() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading form...</p>
+          <p className="mt-4 text-gray-600">{t('loadingForm')}</p>
         </div>
       </div>
     )
@@ -87,8 +89,8 @@ export default function PublicFormView() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900">Form not found</h2>
-          <p className="mt-2 text-gray-600">This form may have been deleted or is not available.</p>
+          <h2 className="text-2xl font-bold text-gray-900">{t('formNotFound')}</h2>
+          <p className="mt-2 text-gray-600">{t('formDeletedOrUnavailable')}</p>
         </div>
       </div>
     )
@@ -103,16 +105,16 @@ export default function PublicFormView() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank you!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('thankYou')}</h2>
           <p className="text-gray-600">
-            {form.settings.confirmationMessage || 'Your response has been recorded.'}
+            {form.settings.confirmationMessage || t('responseRecorded')}
           </p>
           {form.settings.redirectUrl && (
             <a
               href={form.settings.redirectUrl}
               className="mt-6 inline-block px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition"
             >
-              Continue
+              {t('continue')}
             </a>
           )}
         </div>
@@ -149,7 +151,7 @@ export default function PublicFormView() {
               />
             </div>
             <p className="text-sm text-gray-600 mt-2 text-center">
-              {answeredFields} of {totalSteps} answered
+              {answeredFields} {t('of')} {totalSteps} {t('answered')}
             </p>
           </div>
         )}
@@ -199,7 +201,7 @@ export default function PublicFormView() {
               className="w-full py-3 px-6 rounded-lg font-medium text-white transition disabled:opacity-50"
               style={{ backgroundColor: form.theme.primaryColor || '#6366f1' }}
             >
-              {submitting ? 'Submitting...' : 'Submit'}
+              {submitting ? t('submitting') : t('submit')}
             </button>
           </div>
         </form>
@@ -259,7 +261,7 @@ function renderField(field, value, onChange, primaryColor) {
           type={field.type === 'email' ? 'email' : field.type === 'url' ? 'url' : field.type === 'phone' ? 'tel' : 'text'}
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          placeholder={field.placeholder || 'Your answer'}
+          placeholder={field.placeholder || t('yourAnswer')}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
           style={{ '--tw-ring-color': primaryColor }}
           required={field.required}
@@ -271,7 +273,7 @@ function renderField(field, value, onChange, primaryColor) {
         <textarea
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
-          placeholder={field.placeholder || 'Your answer'}
+          placeholder={field.placeholder || t('yourAnswer')}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent resize-none"
           style={{ '--tw-ring-color': primaryColor }}
           rows={4}
@@ -385,7 +387,7 @@ function renderField(field, value, onChange, primaryColor) {
           style={{ '--tw-ring-color': primaryColor }}
           required={field.required}
         >
-          <option value="">Select an option</option>
+          <option value="">{t('selectOption')}</option>
           {field.options?.map((option, idx) => (
             <option key={idx} value={option}>
               {option}
