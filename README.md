@@ -12,7 +12,7 @@
   [![Fiber](https://img.shields.io/badge/Fiber-2.52-00ACD7?style=flat&logo=go)](https://gofiber.io/)
   [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   
-  [🚀 Quick Start](#-quick-start) | [📖 Features](#-features) | [🏗️ Architecture](#️-architecture)
+  [🚀 Quick Start](#-quick-start) | [📖 Features](#-features) | [🏗️ Architecture](#️-architecture) | [☁️ Deploy](#️-deployment)
   
 </div>
 
@@ -352,6 +352,41 @@ DELETE /api/submissions/:id        # Delete submission
 - [ ] **Custom Domains** - Use your own domain for forms
 - [ ] **White Label** - Remove Formexus branding
 - [ ] **API Access** - Programmatic form management
+
+---
+
+## ☁️ Deployment
+
+### 🚀 Deploy to Production
+
+Ready to share your forms with the world? Follow our comprehensive deployment guide:
+
+**📖 [Complete Deployment Guide](./DEPLOYMENT.md)**
+
+**Quick Deploy Options:**
+
+1. **Render.com** (Recommended - Free Tier)
+
+   - ✅ Easy setup (~30 minutes)
+   - ✅ Automatic SSL
+   - ✅ GitHub integration
+   - ✅ Free MongoDB Atlas
+
+2. **Vercel + Railway**
+
+   - Frontend on Vercel
+   - Backend on Railway
+   - Good for scaling
+
+3. **DigitalOcean App Platform**
+   - Professional deployment
+   - Single platform solution
+
+### Deployment Files
+
+- `render.yaml` - Automated Render deployment config
+- `DEPLOYMENT.md` - Step-by-step deployment guide
+- `.env.production.example` - Production environment template
 
 ---
 

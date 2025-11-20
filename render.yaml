@@ -1,0 +1,64 @@
+# Render.com Deployment Configuration
+# This file can be used for automated deployment on Render
+
+services:
+  # Backend Service (Go/Fiber)
+  - type: web
+    name: formexus-backend
+    runtime: go
+    region: frankfurt
+    plan: free
+    branch: main
+    rootDir: backend
+    buildCommand: go build -o server cmd/server/main.go
+    startCommand: ./server
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false # Set manually in Render dashboard
+      - key: MONGODB_DATABASE
+        value: formexus
+      - key: JWT_SECRET
+        generateValue: true # Auto-generate secure secret
+      - key: JWT_EXPIRATION
+        value: 24h
+      - key: GOOGLE_CLIENT_ID
+        sync: false # Set manually
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false # Set manually
+      - key: GOOGLE_REDIRECT_URL
+        fromService:
+          type: web
+          name: formexus-backend
+          envVarKey: RENDER_EXTERNAL_URL
+          property: url
+          format: "${url}/api/auth/google/callback"
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: formexus-frontend
+          property: url
+
+  # Frontend Service (React/Vite)
+  - type: web
+    name: formexus-frontend
+    runtime: static
+    region: frankfurt
+    plan: free
+    branch: main
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: formexus-backend
+          property: url
+          format: "${url}/api"
+      - key: VITE_GOOGLE_CLIENT_ID
+        sync: false # Set manually in Render dashboard
