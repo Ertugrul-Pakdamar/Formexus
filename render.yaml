@@ -35,15 +35,19 @@ services:
       - key: FRONTEND_URL
         sync: false # Set manually: https://your-frontend.onrender.com
 
-  # Frontend Service (React/Vite)
+  # Frontend Service (React/Vite with Node.js server for SPA routing)
   - type: web
     name: formexus-frontend
-    runtime: static
+    runtime: node
+    region: frankfurt
+    plan: free
     branch: main
     rootDir: frontend
     buildCommand: npm install && npm run build
-    staticPublishPath: dist
+    startCommand: npm start
     envVars:
+      - key: PORT
+        value: 3000
       - key: VITE_API_URL
         sync: false # Set manually: https://your-backend.onrender.com/api
       - key: VITE_GOOGLE_CLIENT_ID
