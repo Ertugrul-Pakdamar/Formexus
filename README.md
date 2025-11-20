@@ -12,9 +12,7 @@
   [![Fiber](https://img.shields.io/badge/Fiber-2.52-00ACD7?style=flat&logo=go)](https://gofiber.io/)
   [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   
-  **🌐 [Live Demo](https://formexus.net) | [Backend API](https://formexus.net/api/health)**
-  
-  [🚀 Quick Start](#-quick-start) | [📖 Features](#-features)
+  [🌐 Live Demo](https://formexus.net) | [📖 Features](#-features) | [🚀 Quick Start](#-quick-start)
   
 </div>
 
