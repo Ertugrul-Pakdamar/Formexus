@@ -74,7 +74,11 @@ func Load() *Config {
 			RedirectURL:  getEnv("GOOGLE_REDIRECT_URL", ""),
 		},
 		CORS: CORSConfig{
-			AllowedOrigins: []string{getEnv("FRONTEND_URL", "http://localhost:5173")},
+			AllowedOrigins: []string{
+				getEnv("FRONTEND_URL", "http://localhost:5173"),
+				"http://localhost:5173",
+				"https://formexus.onrender.com",
+			},
 		},
 	}
 }

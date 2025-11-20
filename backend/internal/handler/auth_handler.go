@@ -97,11 +97,14 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 func (h *AuthHandler) GoogleAuth(c *fiber.Ctx) error {
 	var req dto.GoogleAuthRequest
 	if err := c.BodyParser(&req); err != nil {
+		log.Printf("Failed to parse Google auth request: %v", err)
 		return c.Status(fiber.StatusBadRequest).JSON(dto.ErrorResponse{
 			Error:   "Invalid request body",
 			Message: err.Error(),
 		})
 	}
+
+	log.Printf("Google auth request received, token length: %d", len(req.Token))
 
 	// Verify Google token
 	ctx := context.Background()
@@ -123,18 +126,39 @@ func (h *AuthHandler) GoogleAuth(c *fiber.Ctx) error {
 		})
 	}
 
+	log.Printf("Token info: UserId=%s, Email=%s, Verified=%v", tokenInfo.UserId, tokenInfo.Email, tokenInfo.VerifiedEmail)
+
+	// Validate required fields
+	if tokenInfo.Email == "" {
+		log.Printf("Google token missing email")
+		return c.Status(fiber.StatusBadRequest).JSON(dto.ErrorResponse{
+			Error:   "Invalid token",
+			Message: "Email not found in token",
+		})
+	}
+
+	if tokenInfo.UserId == "" {
+		log.Printf("Google token missing user ID")
+		return c.Status(fiber.StatusBadRequest).JSON(dto.ErrorResponse{
+			Error:   "Invalid token",
+			Message: "User ID not found in token",
+		})
+	}
+
 	// Extract user info from token
 	googleID := tokenInfo.UserId
 	email := tokenInfo.Email
-	name := tokenInfo.Email // Default to email
+	name := email // Default to email
 
 	// Try to extract name from email
-	if tokenInfo.Email != "" {
-		parts := strings.Split(tokenInfo.Email, "@")
+	if email != "" {
+		parts := strings.Split(email, "@")
 		if len(parts) > 0 {
 			name = parts[0]
 		}
 	}
+
+	log.Printf("Authenticating Google user: email=%s, googleID=%s", email, googleID)
 
 	// Authenticate user
 	resp, err := h.authService.GoogleAuth(googleID, email, name)
@@ -146,6 +170,7 @@ func (h *AuthHandler) GoogleAuth(c *fiber.Ctx) error {
 		})
 	}
 
+	log.Printf("Google auth successful for user: %s", email)
 	return c.Status(fiber.StatusOK).JSON(resp)
 }
 
