@@ -27,11 +27,6 @@ type UserInfo struct {
 	Name  string `json:"name"`
 }
 
-// GoogleAuthRequest represents Google OAuth token
-type GoogleAuthRequest struct {
-	Token string `json:"token" validate:"required"`
-}
-
 // ErrorResponse represents an error response
 type ErrorResponse struct {
 	Error   string `json:"error"`

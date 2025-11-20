@@ -73,7 +73,6 @@ func main() {
 	auth := api.Group("/auth")
 	auth.Post("/register", authHandler.Register)
 	auth.Post("/login", authHandler.Login)
-	auth.Post("/google", authHandler.GoogleAuth)
 
 	// Public form routes (no authentication required)
 	forms := api.Group("/forms")

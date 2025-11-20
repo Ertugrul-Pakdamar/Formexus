@@ -47,11 +47,6 @@ export const authAPI = {
     return response.data
   },
 
-  googleAuth: async (token) => {
-    const response = await api.post('/auth/google', { token })
-    return response.data
-  },
-
   getMe: async () => {
     const response = await api.get('/me')
     return response.data

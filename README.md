@@ -12,7 +12,9 @@
   [![Fiber](https://img.shields.io/badge/Fiber-2.52-00ACD7?style=flat&logo=go)](https://gofiber.io/)
   [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   
-  [🚀 Quick Start](#-quick-start) | [📖 Features](#-features) | [🏗️ Architecture](#️-architecture) | [☁️ Deploy](#️-deployment)
+  **🌐 [Live Demo](https://formexus-51vy.onrender.com/) | [Backend API](https://formexus-backend-s6vu.onrender.com/health)**
+  
+  [🚀 Quick Start](#-quick-start) | [📖 Features](#-features) | [🏭️ Architecture](#️-architecture) | [☁️ Deploy](#️-deployment)
   
 </div>
 
@@ -22,6 +24,12 @@
 
 **Formexus** is a next-generation form builder platform that empowers you to create beautiful, intelligent forms in minutes. Built with modern technologies and a focus on user experience, Formexus combines powerful features with an intuitive interface.
 
+### 🌐 Live Demo
+
+**Try it now:** [https://formexus-51vy.onrender.com/](https://formexus-51vy.onrender.com/)
+
+_Note: The free tier may take 30-60 seconds to wake up on first visit._
+
 ### ✨ Why Formexus?
 
 - 🎨 **Beautiful Themes** - Customize colors, backgrounds, and styles
@@ -29,7 +37,6 @@
 - 🚀 **Real-time Auto-save** - Never lose your work
 - 📊 **Smart Analytics** - CSV export and response tracking
 - 🔒 **Secure** - JWT authentication and enterprise-grade security
-- 🔑 **Google OAuth** - Sign in with Google for seamless authentication
 - ⚡ **Lightning Fast** - Built with Go and React for optimal performance
 - 🎭 **Template Library** - 6+ pre-built templates to get started quickly
 
@@ -74,7 +81,6 @@
 ### 🔐 Authentication & Security
 
 - **Email/Password Authentication** - Traditional sign-in method
-- **Google OAuth 2.0** - One-click sign-in with Google
 - **JWT Tokens** - Secure session management
 - **bcrypt Password Hashing** - Industry-standard password protection
 - **Protected Routes** - Middleware-based authorization
@@ -241,8 +247,6 @@ MONGODB_DATABASE=formexus
 JWT_SECRET=your-random-secret-key
 JWT_EXPIRATION=24h
 FRONTEND_URL=http://localhost:5173
-GOOGLE_CLIENT_ID=optional
-GOOGLE_CLIENT_SECRET=optional
 ```
 
 ### Frontend Environment Variables
@@ -251,7 +255,6 @@ Create `frontend/.env` from `frontend/.env.example`:
 
 ```env
 VITE_API_URL=http://localhost:8080/api
-VITE_GOOGLE_CLIENT_ID=optional
 ```
 
 **📖 For production deployment and detailed configuration, see [SETUP.md](./SETUP.md)**
@@ -313,11 +316,20 @@ DELETE /api/submissions/:id        # Delete submission
 
 ## ☁️ Deployment
 
-Formexus can be easily deployed to cloud platforms. We provide detailed guides for:
+Formexus is **live in production** and can be easily deployed to cloud platforms.
 
-- **Render.com** (Free tier available)
-- **MongoDB Atlas** (Free M0 cluster)
-- **Google OAuth** production setup
+### 🌐 Production URLs
+
+- **Frontend:** [https://formexus-51vy.onrender.com/](https://formexus-51vy.onrender.com/)
+- **Backend API:** [https://formexus-backend-s6vu.onrender.com/health](https://formexus-backend-s6vu.onrender.com/health)
+- **Database:** MongoDB Atlas (Free M0 Cluster)
+
+### Deployment Options
+
+We provide detailed guides for:
+
+- **Render.com** (Free tier available) - Currently in use
+- **MongoDB Atlas** (Free M0 cluster) - Currently in use
 
 **📖 See [SETUP.md](./SETUP.md) for complete deployment guide with step-by-step instructions.**
 

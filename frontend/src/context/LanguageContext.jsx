@@ -155,14 +155,11 @@ const translations = {
     password: 'Password',
     confirmPassword: 'Confirm Password',
     rememberMe: 'Remember me',
-    forgotPassword: 'Forgot password?',
     processing: 'Processing...',
     signIn: 'Sign In',
     signUp: 'Sign Up',
     noAccount: "Don't have an account?",
     haveAccount: 'Already have an account?',
-    orContinueWith: 'Or continue with',
-    continueWithGoogle: 'Continue with Google',
     
     // Form Editor
     description: 'Description',
@@ -330,14 +327,11 @@ const translations = {
     password: 'Şifre',
     confirmPassword: 'Şifreyi Onayla',
     rememberMe: 'Beni hatırla',
-    forgotPassword: 'Şifremi unuttum',
     processing: 'İşleniyor...',
     signIn: 'Giriş Yap',
     signUp: 'Kayıt Ol',
     noAccount: 'Hesabınız yok mu?',
     haveAccount: 'Zaten hesabınız var mı?',
-    orContinueWith: 'Veya şununla devam edin',
-    continueWithGoogle: 'Google ile devam et',
     
     // Form Editor
     description: 'Açıklama',

@@ -4,8 +4,6 @@
 # You MUST set sensitive values manually in the Render dashboard:
 # - MONGODB_URI
 # - JWT_SECRET (use "Generate" button)
-# - GOOGLE_CLIENT_ID
-# - GOOGLE_CLIENT_SECRET
 # - FRONTEND_URL (set after frontend deployment)
 # - VITE_API_URL (set after backend deployment)
 #
@@ -36,12 +34,6 @@ services:
         generateValue: true # Auto-generate secure secret
       - key: JWT_EXPIRATION
         value: 24h
-      - key: GOOGLE_CLIENT_ID
-        sync: false # Set manually
-      - key: GOOGLE_CLIENT_SECRET
-        sync: false # Set manually
-      - key: GOOGLE_REDIRECT_URL
-        sync: false # Set manually: https://your-backend.onrender.com/api/auth/google/callback
       - key: FRONTEND_URL
         sync: false # Set manually: https://your-frontend.onrender.com
 
@@ -60,6 +52,4 @@ services:
         value: 3000
       - key: VITE_API_URL
         sync: false # Set manually: https://your-backend.onrender.com/api
-      - key: VITE_GOOGLE_CLIENT_ID
-        sync: false # Set manually in Render dashboard
 

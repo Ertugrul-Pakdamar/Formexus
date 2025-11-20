@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
-import { GoogleLogin } from '@react-oauth/google'
 
 function LoginModal({ isOpen, onClose }) {
   const { t } = useLanguage()
@@ -14,31 +13,8 @@ function LoginModal({ isOpen, onClose }) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const { login, register, loginWithGoogle } = useAuth()
+  const { login, register } = useAuth()
   const navigate = useNavigate()
-
-  const handleGoogleSuccess = async (credentialResponse) => {
-    setError('')
-    setLoading(true)
-
-    try {
-      const result = await loginWithGoogle(credentialResponse.credential)
-      if (result.success) {
-        onClose()
-        navigate('/workspace')
-      } else {
-        setError(result.error)
-      }
-    } catch (err) {
-      setError('Google login failed')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const handleGoogleError = () => {
-    setError('Google login failed. Please try again.')
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -165,14 +141,11 @@ function LoginModal({ isOpen, onClose }) {
           )}
 
           {isLogin && (
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-start text-sm">
               <label className="flex items-center">
                 <input type="checkbox" className="rounded border-gray-300 text-purple-600 focus:ring-purple-600" />
                 <span className="ml-2 text-gray-600">{t('rememberMe')}</span>
               </label>
-              <a href="#" className="text-purple-600 hover:text-purple-700 font-medium">
-                {t('forgotPassword')}
-              </a>
             </div>
           )}
 
@@ -200,27 +173,6 @@ function LoginModal({ isOpen, onClose }) {
               {isLogin ? t('signUp') : t('signIn')}
             </button>
           </p>
-        </div>
-
-        <div className="mt-6 relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-4 bg-white text-gray-500">{t('orContinueWith')}</span>
-          </div>
-        </div>
-
-        <div className="mt-6">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            useOneTap
-            theme="outline"
-            size="large"
-            text="continue_with"
-            width="100%"
-          />
         </div>
       </div>
     </div>
