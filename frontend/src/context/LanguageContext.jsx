@@ -174,6 +174,7 @@ const translations = {
     showProgressBar: 'Show progress bar',
     confirmationMessage: 'Confirmation Message',
     defaultConfirmationMessage: 'Thank you for your submission!',
+    previewMode: 'Preview Mode',
   },
   tr: {
     // Navigation & Common
@@ -348,6 +349,7 @@ const translations = {
     showProgressBar: 'İlerleme çubuğunu göster',
     confirmationMessage: 'Onay Mesajı',
     defaultConfirmationMessage: 'Gönderiminiz için teşekkürler!',
+    previewMode: 'Önizleme Modu',
   },
 }
 

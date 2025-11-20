@@ -9,7 +9,7 @@ import LanguageSwitcher from '../components/LanguageSwitcher'
 
 function Workspace() {
   const { user, logout } = useAuth()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const navigate = useNavigate()
   const [forms, setForms] = useState([])
   const [loading, setLoading] = useState(true)
@@ -133,16 +133,130 @@ function Workspace() {
 
   const createNewForm = async (template) => {
     try {
+      // Translate template fields based on current language
+      let fields = template?.fields || []
+      if (template && fields.length > 0) {
+        fields = fields.map(field => ({
+          ...field,
+          label: getTranslatedFieldLabel(field, language),
+          description: field.description ? getTranslatedFieldDescription(field, language) : '',
+          options: field.options ? field.options.map(opt => getTranslatedOption(field, opt, language)) : undefined,
+          placeholder: field.placeholder ? getTranslatedPlaceholder(field, language) : undefined
+        }))
+      }
+      
       const newForm = await formAPI.createForm({
-        title: template?.name || 'Untitled Form',
+        title: template ? t(template.nameKey) : t('untitledForm'),
         description: '',
-        fields: template?.fields || [],
+        fields: fields,
       })
       navigate(`/workspace/forms/${newForm.id}`)
     } catch (error) {
       console.error('Error creating form:', error)
       setToast({ isOpen: true, message: t('failedToCreate'), type: 'error' })
     }
+  }
+
+  const getTranslatedFieldLabel = (field, lang) => {
+    const translations = {
+      en: {
+        'Full Name': 'Full Name',
+        'Email Address': 'Email Address',
+        'Phone Number': 'Phone Number',
+        'Message': 'Message',
+        'Customer Satisfaction Survey': 'Customer Satisfaction Survey',
+        'Overall Satisfaction': 'Overall Satisfaction',
+        'How often do you use our service?': 'How often do you use our service?',
+        'What features do you use?': 'What features do you use?',
+        'Additional Comments': 'Additional Comments',
+        'Event Registration': 'Event Registration',
+        'T-Shirt Size': 'T-Shirt Size',
+        'Dietary Restrictions': 'Dietary Restrictions',
+        'General Knowledge Quiz': 'General Knowledge Quiz',
+        'What is the capital of France?': 'What is the capital of France?',
+        'Which planet is closest to the Sun?': 'Which planet is closest to the Sun?',
+        'Select all programming languages': 'Select all programming languages',
+        'What is 2 + 2?': 'What is 2 + 2?',
+        'We Value Your Feedback': 'We Value Your Feedback',
+        'How likely are you to recommend us?': 'How likely are you to recommend us?',
+        'Product Quality': 'Product Quality',
+        'Customer Service': 'Customer Service',
+        'What can we improve?': 'What can we improve?',
+        'Email': 'Email',
+        'Phone': 'Phone'
+      },
+      tr: {
+        'Full Name': 'Ad Soyad',
+        'Email Address': 'E-posta Adresi',
+        'Phone Number': 'Telefon Numarası',
+        'Message': 'Mesaj',
+        'Customer Satisfaction Survey': 'Müşteri Memnuniyeti Anketi',
+        'Overall Satisfaction': 'Genel Memnuniyet',
+        'How often do you use our service?': 'Hizmetimizi ne sıklıkta kullanıyorsunuz?',
+        'What features do you use?': 'Hangi özellikleri kullanıyorsunuz?',
+        'Additional Comments': 'Ek Yorumlar',
+        'Event Registration': 'Etkinlik Kaydı',
+        'T-Shirt Size': 'Tişört Bedeni',
+        'Dietary Restrictions': 'Diyet Kısıtlamaları',
+        'General Knowledge Quiz': 'Genel Kültür Testi',
+        'What is the capital of France?': 'Fransa\'nın başkenti neresidir?',
+        'Which planet is closest to the Sun?': 'Güneş\'e en yakın gezegen hangisidir?',
+        'Select all programming languages': 'Tüm programlama dillerini seçin',
+        'What is 2 + 2?': '2 + 2 kaçtır?',
+        'We Value Your Feedback': 'Görüşleriniz Bizim İçin Değerli',
+        'How likely are you to recommend us?': 'Bizi tavsiye etme olasılığınız nedir?',
+        'Product Quality': 'Ürün Kalitesi',
+        'Customer Service': 'Müşteri Hizmetleri',
+        'What can we improve?': 'Neyi geliştirebiliriz?',
+        'Email': 'E-posta',
+        'Phone': 'Telefon'
+      }
+    }
+    return translations[lang]?.[field.label] || field.label
+  }
+
+  const getTranslatedFieldDescription = (field, lang) => {
+    const translations = {
+      en: {
+        'Help us improve our service': 'Help us improve our service',
+        'Please fill in your details': 'Please fill in your details',
+        'Test your knowledge': 'Test your knowledge',
+        'Tell us what you think': 'Tell us what you think'
+      },
+      tr: {
+        'Help us improve our service': 'Hizmetimizi geliştirmemize yardımcı olun',
+        'Please fill in your details': 'Lütfen bilgilerinizi doldurun',
+        'Test your knowledge': 'Bilginizi test edin',
+        'Tell us what you think': 'Ne düşündüğünüzü bize söyleyin'
+      }
+    }
+    return translations[lang]?.[field.description] || field.description
+  }
+
+  const getTranslatedOption = (field, option, lang) => {
+    const translations = {
+      en: {
+        'Daily': 'Daily', 'Weekly': 'Weekly', 'Monthly': 'Monthly', 'Rarely': 'Rarely',
+        'Feature A': 'Feature A', 'Feature B': 'Feature B', 'Feature C': 'Feature C', 'Feature D': 'Feature D',
+        'None': 'None', 'Vegetarian': 'Vegetarian', 'Vegan': 'Vegan', 'Gluten-Free': 'Gluten-Free', 'Halal': 'Halal',
+        'London': 'London', 'Paris': 'Paris', 'Berlin': 'Berlin', 'Madrid': 'Madrid',
+        'Venus': 'Venus', 'Mercury': 'Mercury', 'Mars': 'Mars', 'Earth': 'Earth',
+        'Python': 'Python', 'HTML': 'HTML', 'JavaScript': 'JavaScript', 'CSS': 'CSS', 'Java': 'Java'
+      },
+      tr: {
+        'Daily': 'Günlük', 'Weekly': 'Haftalık', 'Monthly': 'Aylık', 'Rarely': 'Nadiren',
+        'Feature A': 'Özellik A', 'Feature B': 'Özellik B', 'Feature C': 'Özellik C', 'Feature D': 'Özellik D',
+        'None': 'Yok', 'Vegetarian': 'Vejetaryen', 'Vegan': 'Vegan', 'Gluten-Free': 'Glutensiz', 'Halal': 'Helal',
+        'London': 'Londra', 'Paris': 'Paris', 'Berlin': 'Berlin', 'Madrid': 'Madrid',
+        'Venus': 'Venüs', 'Mercury': 'Merkür', 'Mars': 'Mars', 'Earth': 'Dünya',
+        'Python': 'Python', 'HTML': 'HTML', 'JavaScript': 'JavaScript', 'CSS': 'CSS', 'Java': 'Java'
+      }
+    }
+    return translations[lang]?.[option] || option
+  }
+
+  const getTranslatedPlaceholder = (field, lang) => {
+    return lang === 'tr' ? 'Cevabınız' : 'Your answer'
   }
 
   const deleteForm = async () => {

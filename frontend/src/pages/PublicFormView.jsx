@@ -23,10 +23,13 @@ export default function PublicFormView() {
   const loadForm = async () => {
     try {
       setLoading(true)
+      console.log('Loading form with slug:', slug)
       const data = await formAPI.getPublicForm(slug)
+      console.log('Form loaded:', data)
       setForm(data)
     } catch (error) {
       console.error('Error loading form:', error)
+      console.error('Error response:', error.response)
       setToast({ isOpen: true, message: t('formNotFoundOrUnavailable'), type: 'error' })
     } finally {
       setLoading(false)
@@ -189,6 +192,7 @@ export default function PublicFormView() {
                 onChange={(value) => handleInputChange(field.id, value)}
                 error={errors[field.id]}
                 primaryColor={form.theme.primaryColor}
+                t={t}
               />
             ))}
           </div>
@@ -223,7 +227,7 @@ export default function PublicFormView() {
   )
 }
 
-function FormField({ field, index, value, onChange, error, primaryColor }) {
+function FormField({ field, index, value, onChange, error, primaryColor, t }) {
   if (field.type === 'section') {
     return (
       <div className="pt-6 pb-2">
@@ -242,7 +246,7 @@ function FormField({ field, index, value, onChange, error, primaryColor }) {
       {field.description && <p className="text-sm text-gray-600 mb-3">{field.description}</p>}
 
       <div>
-        {renderField(field, value, onChange, primaryColor)}
+        {renderField(field, value, onChange, primaryColor, t)}
       </div>
 
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
@@ -250,7 +254,7 @@ function FormField({ field, index, value, onChange, error, primaryColor }) {
   )
 }
 
-function renderField(field, value, onChange, primaryColor) {
+function renderField(field, value, onChange, primaryColor, t) {
   switch (field.type) {
     case 'short_text':
     case 'email':

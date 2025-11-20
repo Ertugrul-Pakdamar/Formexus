@@ -1,30 +1,52 @@
+import { useLanguage } from '../context/LanguageContext'
+
 export default function FormPreview({ form }) {
+  const { t } = useLanguage()
+  
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
+    <div 
+      className="rounded-lg shadow-lg p-8 max-w-2xl mx-auto"
+      style={{
+        backgroundColor: form.theme?.backgroundColor || '#ffffff',
+        fontFamily: form.theme?.fontFamily || 'Inter, system-ui, sans-serif'
+      }}
+    >
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{form.title}</h1>
+        <h1 
+          className="text-3xl font-bold mb-2"
+          style={{ color: form.theme?.primaryColor || '#6366f1' }}
+        >
+          {form.title}
+        </h1>
         {form.description && <p className="text-gray-600">{form.description}</p>}
       </div>
 
       <div className="space-y-6">
         {form.fields.map((field, index) => (
-          <FieldPreview key={field.id} field={field} index={index} />
+          <FieldPreview 
+            key={field.id} 
+            field={field} 
+            index={index} 
+            primaryColor={form.theme?.primaryColor || '#6366f1'}
+            t={t}
+          />
         ))}
       </div>
 
       <div className="mt-8 pt-6 border-t">
         <button
           disabled
-          className="w-full bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full text-white py-3 px-6 rounded-lg font-medium transition disabled:opacity-50 disabled:cursor-not-allowed"
+          style={{ backgroundColor: form.theme?.primaryColor || '#6366f1' }}
         >
-          Submit (Preview Mode)
+          {t('submit')} ({t('previewMode')})
         </button>
       </div>
     </div>
   )
 }
 
-function FieldPreview({ field, index }) {
+function FieldPreview({ field, index, primaryColor, t }) {
   if (field.type === 'section') {
     return (
       <div className="pt-6 pb-2">
@@ -43,13 +65,13 @@ function FieldPreview({ field, index }) {
       {field.description && <p className="text-sm text-gray-600 mb-3">{field.description}</p>}
 
       <div className="field-input">
-        {renderFieldInput(field)}
+        {renderFieldInput(field, primaryColor, t)}
       </div>
     </div>
   )
 }
 
-function renderFieldInput(field) {
+function renderFieldInput(field, primaryColor, t) {
   switch (field.type) {
     case 'short_text':
     case 'email':
@@ -58,8 +80,9 @@ function renderFieldInput(field) {
       return (
         <input
           type={field.type === 'email' ? 'email' : field.type === 'url' ? 'url' : 'text'}
-          placeholder={field.placeholder || 'Your answer'}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          placeholder={field.placeholder || t('yourAnswer')}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+          style={{ '--tw-ring-color': primaryColor }}
           disabled
         />
       )
@@ -67,8 +90,9 @@ function renderFieldInput(field) {
     case 'long_text':
       return (
         <textarea
-          placeholder={field.placeholder || 'Your answer'}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent resize-none"
+          placeholder={field.placeholder || t('yourAnswer')}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent resize-none"
+          style={{ '--tw-ring-color': primaryColor }}
           rows={4}
           disabled
         />
@@ -149,10 +173,11 @@ function renderFieldInput(field) {
     case 'dropdown':
       return (
         <select
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent"
+          style={{ '--tw-ring-color': primaryColor }}
           disabled
         >
-          <option value="">Select an option</option>
+          <option value="">{t('selectOption')}</option>
           {field.options?.map((option, idx) => (
             <option key={idx} value={option}>
               {option}
