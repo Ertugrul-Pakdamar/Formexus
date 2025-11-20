@@ -107,11 +107,176 @@ _Note: The free tier may take 30-60 seconds to wake up on first visit._
 
 ## 🚀 Quick Start
 
+### Deployment Options
+
+Formexus can be deployed in two ways:
+
+1. **Raspberry Pi + Cloudflare Tunnel** (Self-hosted, recommended for privacy)
+2. **Cloud Deployment** (Render.com, Vercel, etc.)
+
+---
+
+## 🏠 Raspberry Pi Deployment (Recommended)
+
+### Prerequisites
+
+- **Raspberry Pi 4/5** (2GB+ RAM recommended)
+- **Raspberry Pi OS** (64-bit)
+- **Docker & Docker Compose**
+- **Cloudflare Account** (free tier works)
+- **Domain name** (optional, can use Cloudflare's subdomain)
+
+### Quick Setup
+
+```bash
+# 1. Clone repository
+git clone https://github.com/Ertugrul-Pakdamar/Formexus.git
+cd Formexus
+
+# 2. Run setup script
+chmod +x setup.sh
+./setup.sh
+
+# 3. Edit .env file and update your domain
+nano .env
+
+# 4. Deploy the application
+./deploy.sh
+
+# 5. Setup Cloudflare Tunnel
+cd cloudflare-tunnel
+./setup-tunnel.sh
+```
+
+### Manual Setup
+
+#### 1. Install Docker (if not installed)
+
+```bash
+curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+# Log out and back in
+```
+
+#### 2. Install Docker Compose
+
+```bash
+sudo apt-get update
+sudo apt-get install -y docker-compose-plugin
+```
+
+#### 3. Configure Environment
+
+```bash
+# Copy example environment file
+cp .env.example .env
+
+# Edit with your settings
+nano .env
+```
+
+**Required .env updates:**
+
+- `MONGO_ROOT_PASSWORD` - Strong password for MongoDB
+- `JWT_SECRET` - Random string (min 32 characters)
+- `FRONTEND_URL` - Your domain (e.g., https://formexus.yourdomain.com)
+- `VITE_API_URL` - Your API domain (e.g., https://api.formexus.yourdomain.com)
+
+#### 4. Deploy with Docker Compose
+
+```bash
+# Full deployment (MongoDB + Backend + Frontend)
+docker-compose up -d
+
+# Or use the deployment script
+./deploy.sh
+```
+
+#### 5. Setup Cloudflare Tunnel
+
+```bash
+# Install cloudflared
+wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64
+sudo mv cloudflared-linux-arm64 /usr/local/bin/cloudflared
+sudo chmod +x /usr/local/bin/cloudflared
+
+# Login to Cloudflare
+cloudflared tunnel login
+
+# Create tunnel
+cloudflared tunnel create formexus
+
+# Note your tunnel ID and update cloudflare-tunnel/config.yml
+nano cloudflare-tunnel/config.yml
+
+# Run tunnel
+cloudflared tunnel --config ./cloudflare-tunnel/config.yml run
+```
+
+See [cloudflare-tunnel/README.md](cloudflare-tunnel/README.md) for detailed Cloudflare setup.
+
+### System Requirements
+
+| Component | Minimum                | Recommended |
+| --------- | ---------------------- | ----------- |
+| RAM       | 2GB                    | 4GB+        |
+| Storage   | 8GB                    | 16GB+       |
+| CPU       | 4 cores                | 4 cores     |
+| OS        | Raspberry Pi OS 64-bit | Latest      |
+
+### Architecture on Raspberry Pi
+
+```
+Internet → Cloudflare Tunnel → Raspberry Pi
+                                    ├─ Frontend (Port 3000)
+                                    ├─ Backend (Port 8080)
+                                    └─ MongoDB (Port 27017)
+```
+
+### Advantages of Raspberry Pi Deployment
+
+- 🏠 **Self-hosted** - Full control over your data
+- 💰 **Cost-effective** - No monthly hosting fees
+- 🔒 **Privacy** - Data stays on your device
+- ⚡ **Fast** - No cold starts like serverless
+- 🌍 **Global Access** - Via Cloudflare Tunnel
+- 🔐 **Secure** - HTTPS via Cloudflare
+
+### Maintenance
+
+```bash
+# View logs
+docker-compose logs -f
+
+# Restart services
+docker-compose restart
+
+# Update application
+git pull
+./deploy.sh  # Choose option 3 (Update only)
+
+# Backup MongoDB
+docker exec formexus-mongodb mongodump --out /data/backup
+
+# Stop all services
+docker-compose down
+```
+
+---
+
+## ☁️ Cloud Deployment (Alternative)
+
+### Prerequisites
+
+## ☁️ Cloud Deployment (Alternative)
+
+For traditional cloud deployment on platforms like Render.com:
+
 ### Prerequisites
 
 - **Node.js** 18+ and npm
 - **Go** 1.21+
-- **Docker** (for MongoDB)
+- **MongoDB Atlas** account (free tier)
 - **Git**
 
 ### Installation
@@ -125,41 +290,140 @@ cd Formexus
 cd backend
 cp .env.example .env
 # Edit .env and configure your settings
-cd docker && bash clean_setup.sh && cd ..
 go mod download
 make run
 
 # 3. Setup frontend (new terminal)
 cd frontend
 cp .env.example .env
-# Edit .env and add VITE_API_URL=http://localhost:8080/api
+# Edit .env and add VITE_API_URL=http://localhost:8080
 npm install
 npm run dev
+```
+
+### Current Production Deployment
+
+- **Frontend:** [https://formexus-51vy.onrender.com/](https://formexus-51vy.onrender.com/)
+- **Backend API:** [https://formexus-backend-s6vu.onrender.com/health](https://formexus-backend-s6vu.onrender.com/health)
+- **Database:** MongoDB Atlas (Free M0 Cluster)
+
+_Note: Cloud deployment on free tier may have cold starts (30-60 seconds on first visit)._
+
+---
+
+## 📦 Docker Deployment Files
+
+### docker-compose.yml
+
+Includes three main services:
+
+- **MongoDB** - Local database (or use MongoDB Atlas)
+- **Backend** - Go/Fiber API server
+- **Frontend** - React app served via Nginx
+
+### Dockerfiles
+
+- `backend/Dockerfile` - Multi-stage build optimized for ARM64
+- `frontend/Dockerfile` - Nginx-based production build
+
+### Cloudflare Tunnel
+
+- `cloudflare-tunnel/config.yml` - Tunnel routing configuration
+- `cloudflare-tunnel/setup-tunnel.sh` - Automated setup script
+- `cloudflare-tunnel/README.md` - Detailed setup guide
+
+---
+
+## 🛠️ Development
+
+### Local Development (without Docker)
+
+```bash
+# Backend
+cd backend
+make run
+
+# Frontend (new terminal)
+cd frontend
+npm run dev
+```
+
+### With Docker (full stack)
+
+```bash
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
 ```
 
 ### Environment Setup
 
 Both backend and frontend need environment variables. Copy the example files and configure:
 
-**Backend:**
+**Backend (.env):**
 
-```bash
-cd backend
-cp .env.example .env
+```env
+# MongoDB Configuration
+MONGO_ROOT_USERNAME=admin
+MONGO_ROOT_PASSWORD=your_strong_password
+MONGO_DATABASE=formexus
+MONGODB_URI=mongodb://admin:password@mongodb:27017
+
+# Server Configuration
+PORT=8080
+JWT_SECRET=your_secret_key_min_32_chars
+FRONTEND_URL=https://formexus.yourdomain.com
+
+# For MongoDB Atlas (alternative)
+# MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/formexus
 ```
 
-**Frontend:**
+**Frontend (.env):**
 
-```bash
-cd frontend
-cp .env.example .env
+```env
+# API Configuration
+VITE_API_URL=https://api.formexus.yourdomain.com
+
+# For local development
+# VITE_API_URL=http://localhost:8080
 ```
 
 **⚠️ Important:** Never commit `.env` files to Git! They contain sensitive data.
 
 ---
 
-## 🛠️ Tech Stack
+## 🏗️ Architecture
+
+### System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                     Cloudflare Tunnel                        │
+│                    (SSL/TLS Termination)                     │
+└────────────────────┬────────────────────────────────────────┘
+                     │
+         ┌───────────┴───────────┐
+         │                       │
+    formexus.domain.com    api.formexus.domain.com
+         │                       │
+┌────────▼────────┐    ┌────────▼─────────┐
+│   Frontend      │    │    Backend       │
+│   (React/Nginx) │◄───┤   (Go/Fiber)     │
+│   Port: 3000    │    │   Port: 8080     │
+└─────────────────┘    └────────┬─────────┘
+                                │
+                       ┌────────▼─────────┐
+                       │    MongoDB       │
+                       │   Port: 27017    │
+                       └──────────────────┘
+```
+
+### Technology Stack
 
 ### Frontend
 
@@ -197,34 +461,41 @@ cp .env.example .env
 
 ```
 Formexus/
-├── frontend/                 # React frontend application
+├── frontend/                      # React frontend application
 │   ├── src/
-│   │   ├── components/       # Reusable components
-│   │   ├── pages/            # Page components
-│   │   ├── context/          # Context providers (Auth, Language)
-│   │   ├── services/         # API services
-│   │   └── main.jsx          # Entry point
-│   ├── public/               # Static assets
+│   │   ├── components/            # Reusable components
+│   │   ├── pages/                 # Page components
+│   │   ├── context/               # Context providers
+│   │   └── services/              # API services
+│   ├── Dockerfile                 # Frontend Docker build
+│   ├── nginx.conf                 # Nginx configuration
 │   └── package.json
 │
-├── backend/                  # Go backend application
-│   ├── cmd/
-│   │   └── server/           # Main application entry
+├── backend/                       # Go backend application
+│   ├── cmd/server/                # Main entry point
 │   ├── internal/
-│   │   ├── config/           # Configuration
-│   │   ├── database/         # Database connection
-│   │   ├── domain/           # Domain models
-│   │   ├── dto/              # Data transfer objects
-│   │   ├── handler/          # HTTP handlers
-│   │   ├── middleware/       # Middleware (auth, CORS, logging)
-│   │   ├── repository/       # Database repositories
-│   │   └── service/          # Business logic
-│   ├── pkg/
-│   │   └── utils/            # Utilities (JWT, password)
-│   ├── docker/               # Docker setup scripts
+│   │   ├── handler/               # HTTP handlers
+│   │   ├── middleware/            # Auth, CORS, logging
+│   │   ├── repository/            # Database layer
+│   │   └── service/               # Business logic
+│   ├── pkg/utils/                 # Utilities
+│   ├── Dockerfile                 # Backend Docker build
 │   └── Makefile
 │
-└── README.md                 # This file
+├── cloudflare-tunnel/             # Cloudflare Tunnel setup
+│   ├── config.yml                 # Tunnel configuration
+│   ├── setup-tunnel.sh            # Setup script
+│   └── README.md                  # Tunnel documentation
+│
+├── mongodb/                       # MongoDB configuration
+│   ├── init-mongo.js              # Database initialization
+│   └── README.md                  # MongoDB documentation
+│
+├── docker-compose.yml             # Docker orchestration
+├── .env.example                   # Environment template
+├── setup.sh                       # Quick setup script
+├── deploy.sh                      # Deployment script
+└── README.md                      # This file
 ```
 
 ---
@@ -233,25 +504,83 @@ Formexus/
 
 ### Backend Environment Variables
 
-Create `backend/.env` from `backend/.env.example`:
+See `.env.example` for full configuration options:
 
 ```env
-PORT=8080
-ENV=development
+# Database
 MONGODB_URI=mongodb://localhost:27017/formexus
-MONGODB_DATABASE=formexus
-JWT_SECRET=your-random-secret-key
-JWT_EXPIRATION=24h
-FRONTEND_URL=http://localhost:5173
+MONGO_ROOT_USERNAME=admin
+MONGO_ROOT_PASSWORD=changeme
+
+# Server
+PORT=8080
+JWT_SECRET=your-secret-key
+FRONTEND_URL=http://localhost:3000
+
+# Optional
+TZ=Europe/Istanbul
 ```
 
 ### Frontend Environment Variables
 
-Create `frontend/.env` from `frontend/.env.example`:
-
 ```env
-VITE_API_URL=http://localhost:8080/api
+VITE_API_URL=http://localhost:8080
 ```
+
+### Cloudflare Tunnel Configuration
+
+Edit `cloudflare-tunnel/config.yml`:
+
+```yaml
+tunnel: YOUR_TUNNEL_ID
+credentials-file: /path/to/credentials.json
+
+ingress:
+  - hostname: formexus.yourdomain.com
+    service: http://localhost:3000
+  - hostname: api.formexus.yourdomain.com
+    service: http://localhost:8080
+  - service: http_status:404
+```
+
+---
+
+## 🔒 Security Features
+
+Formexus implements multiple security layers:
+
+### Authentication & Authorization
+
+- JWT-based authentication
+- bcrypt password hashing (cost factor: 12)
+- Protected routes with middleware
+- Secure session management
+
+### Input Validation & Sanitization
+
+- XSS protection (HTML escaping, script tag removal)
+- Input sanitization on all user inputs
+- Email validation with regex
+- Name validation (alphanumeric + spaces only)
+
+### Security Headers
+
+- Content Security Policy (CSP)
+- X-XSS-Protection
+- X-Frame-Options (SAMEORIGIN)
+- X-Content-Type-Options (nosniff)
+- Referrer-Policy (strict-origin-when-cross-origin)
+
+### Network Security
+
+- CORS configuration
+- HTTPS via Cloudflare Tunnel
+- Rate limiting ready
+- Environment variable protection
+
+### Security Score: 9.2/10
+
+See [SECURITY_REPORT.md](SECURITY_REPORT.md) for detailed security audit.
 
 ---
 
@@ -308,32 +637,40 @@ DELETE /api/submissions/:id        # Delete submission
 
 ---
 
-## ☁️ Deployment
+## ☁️ Deployment Options Comparison
 
-Formexus is **live in production** and can be easily deployed to cloud platforms.
+| Feature         | Raspberry Pi + Cloudflare | Cloud (Render/Vercel) |
+| --------------- | ------------------------- | --------------------- |
+| **Cost**        | One-time (~$50)           | $0-20/month           |
+| **Control**     | Full control              | Limited               |
+| **Privacy**     | Complete                  | Shared infrastructure |
+| **Cold Starts** | None                      | Yes (free tier)       |
+| **Scalability** | Limited                   | High                  |
+| **Maintenance** | Self-managed              | Managed               |
+| **Setup Time**  | 1-2 hours                 | 30 minutes            |
+| **Best For**    | Personal/Small team       | Production/Scale      |
 
-### 🌐 Production URLs
+### Raspberry Pi Deployment
 
-- **Frontend:** [https://formexus.onrender.com/](https://formexus.onrender.com/)
-- **Backend API:** [https://formexus-backend-s6vu.onrender.com/health](https://formexus-backend-s6vu.onrender.com/health)
-- **Database:** MongoDB Atlas (Free M0 Cluster)
+**Pros:**
 
-### Deployment Options
+- 🏠 Full data control and privacy
+- 💰 No monthly fees
+- ⚡ No cold starts
+- 🔒 Data stays local
+- 🌍 Global access via Cloudflare
 
-We provide detailed guides for:
+**Cons:**
 
-- **Render.com** (Free tier available) - Currently in use
-- **MongoDB Atlas** (Free M0 cluster) - Currently in use
+- 🔧 Requires hardware
+- 🛠️ Self-maintenance
+- 📊 Limited resources
+- 💡 Needs stable power/internet
 
-### Quick Deploy Summary
+**Live Example:**
 
-1. **Database:** MongoDB Atlas M0 (Free)
-2. **Backend:** Render.com Web Service (Free)
-3. **Frontend:** Render.com Web Service (Free)
-4. **Total Cost:** $0/month
-5. **Setup Time:** ~30 minutes
-
-For automated deployment configuration, see `render.yaml` in the project root.
+- See production deployment at: [https://formexus-51vy.onrender.com/](https://formexus-51vy.onrender.com/)
+- Backend API: [https://formexus-backend-s6vu.onrender.com/health](https://formexus-backend-s6vu.onrender.com/health)
 
 ---
 

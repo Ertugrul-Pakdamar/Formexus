@@ -1,0 +1,7 @@
+# Ignore credentials file
+credentials.json
+*.json
+
+# Ignore tunnel ID specific files
+*.pem
+cert.pem

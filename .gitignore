@@ -13,12 +13,18 @@ secrets/
 *.pem
 credentials.json
 service-account.json
+cloudflare-tunnel/credentials.json
+cloudflare-tunnel/*.json
+cloudflare-tunnel/*.pem
 
 # Database files
 *.db
 *.sqlite
 data/
 mongo-data/
+mongodb/data/
+mongodb/logs/
+volumes/
 
 # Logs
 *.log

@@ -1,0 +1,26 @@
+tunnel: YOUR_TUNNEL_ID
+credentials-file: /root/.cloudflared/YOUR_TUNNEL_ID.json
+
+ingress:
+  # Frontend - Ana domain
+  - hostname: formexus.yourdomain.com
+    service: http://localhost:3000
+    originRequest:
+      noTLSVerify: false
+      connectTimeout: 30s
+
+  # Backend API - API subdomain
+  - hostname: api.formexus.yourdomain.com
+    service: http://localhost:8080
+    originRequest:
+      noTLSVerify: false
+      connectTimeout: 30s
+
+  # Catch-all rule (required)
+  - service: http_status:404
+
+# Optional: Logging configuration
+loglevel: info
+
+# Optional: Metrics
+metrics: localhost:60123
