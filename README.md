@@ -12,9 +12,9 @@
   [![Fiber](https://img.shields.io/badge/Fiber-2.52-00ACD7?style=flat&logo=go)](https://gofiber.io/)
   [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   
-  **🌐 [Live Demo](https://formexus.onrender.com) | [Backend API](https://formexus-backend-s6vu.onrender.com/health)**
+  **🌐 [Live Demo](https://formexus.net) | [Backend API](https://formexus.net/api/health)**
   
-  [🚀 Quick Start](#-quick-start) | [📖 Features](#-features) | [🏭️ Architecture](#️-architecture) | [☁️ Deploy](#️-deployment)
+  [🚀 Quick Start](#-quick-start) | [📖 Features](#-features)
   
 </div>
 
@@ -26,9 +26,9 @@
 
 ### 🌐 Live Demo
 
-**Try it now:** [https://formexus.onrender.com](https://formexus.onrender.com)
+**Try it now:** [https://formexus.net](https://formexus.net)
 
-_Note: The free tier may take 30-60 seconds to wake up on first visit._
+_Self-hosted on Raspberry Pi with Cloudflare Tunnel for global access._
 
 ### ✨ Why Formexus?
 
@@ -266,10 +266,6 @@ docker-compose down
 
 ## ☁️ Cloud Deployment (Alternative)
 
-### Prerequisites
-
-## ☁️ Cloud Deployment (Alternative)
-
 For traditional cloud deployment on platforms like Render.com:
 
 ### Prerequisites
@@ -394,66 +390,6 @@ VITE_API_URL=https://api.formexus.yourdomain.com
 ```
 
 **⚠️ Important:** Never commit `.env` files to Git! They contain sensitive data.
-
----
-
-## 🏗️ Architecture
-
-### System Architecture
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Cloudflare Tunnel                        │
-│                    (SSL/TLS Termination)                     │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-         ┌───────────┴───────────┐
-         │                       │
-    formexus.domain.com    api.formexus.domain.com
-         │                       │
-┌────────▼────────┐    ┌────────▼─────────┐
-│   Frontend      │    │    Backend       │
-│   (React/Nginx) │◄───┤   (Go/Fiber)     │
-│   Port: 3000    │    │   Port: 8080     │
-└─────────────────┘    └────────┬─────────┘
-                                │
-                       ┌────────▼─────────┐
-                       │    MongoDB       │
-                       │   Port: 27017    │
-                       └──────────────────┘
-```
-
-### Technology Stack
-
-### Frontend
-
-| Technology       | Purpose                 |
-| ---------------- | ----------------------- |
-| **React 18.3**   | UI Framework            |
-| **Vite**         | Build Tool & Dev Server |
-| **React Router** | Client-side Routing     |
-| **Tailwind CSS** | Styling Framework       |
-| **Axios**        | HTTP Client             |
-| **Context API**  | State Management        |
-
-### Backend
-
-| Technology     | Purpose              |
-| -------------- | -------------------- |
-| **Go 1.21+**   | Backend Language     |
-| **Fiber 2.52** | Web Framework        |
-| **MongoDB**    | Database             |
-| **JWT**        | Authentication       |
-| **bcrypt**     | Password Hashing     |
-| **CORS**       | Cross-Origin Support |
-
-### Infrastructure
-
-| Technology | Purpose           |
-| ---------- | ----------------- |
-| **Docker** | MongoDB Container |
-| **Git**    | Version Control   |
-| **Make**   | Build Automation  |
 
 ---
 

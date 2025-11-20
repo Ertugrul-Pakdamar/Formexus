@@ -1,5 +1,5 @@
 # Multi-stage build for Raspberry Pi (ARM64)
-FROM --platform=linux/arm64 golang:1.21-alpine AS builder
+FROM --platform=linux/arm64 golang:1.24-alpine AS builder
 
 # Install build dependencies
 RUN apk add --no-cache git make

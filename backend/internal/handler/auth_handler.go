@@ -40,6 +40,7 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 
 	// Validate request
 	if err := validateRegisterRequest(&req); err != nil {
+		log.Printf("Validation error: %v", err)
 		return c.Status(fiber.StatusBadRequest).JSON(dto.ErrorResponse{
 			Error:   "Validation failed",
 			Message: err.Error(),

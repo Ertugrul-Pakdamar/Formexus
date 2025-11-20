@@ -37,7 +37,8 @@ func SanitizeEmail(email string) string {
 
 // ValidateName checks if name contains only allowed characters
 func ValidateName(name string) bool {
-	// Allow letters, spaces, hyphens, apostrophes
-	nameRegex := regexp.MustCompile(`^[a-zA-ZÀ-ÿ\s'-]+$`)
+	// Allow Unicode letters, spaces, hyphens, apostrophes
+	// \p{L} matches any Unicode letter (including Turkish chars)
+	nameRegex := regexp.MustCompile(`^[\p{L}\s'-]+$`)
 	return nameRegex.MatchString(name)
 }
