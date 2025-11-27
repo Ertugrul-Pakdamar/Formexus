@@ -114,6 +114,58 @@ Formexus can be deployed in two ways:
 
 ---
 
+## 🚀 Quick Start with Makefile
+
+**New! All operations simplified with a single Makefile.**
+
+```bash
+# View all available commands
+make help
+
+# Quick start (development)
+make quick-dev
+
+# Quick start (production)
+make quick-start
+
+# Deploy to Raspberry Pi
+make deploy
+```
+
+### 🎯 Common Commands
+
+```bash
+# Development
+make dev              # Start development environment
+make install          # Install dependencies
+make logs             # View all logs
+
+# Production
+make prod             # Start production
+make build            # Build Docker images
+make restart          # Restart all services
+
+# Cloudflare Tunnel
+make tunnel-setup     # First-time tunnel setup
+make tunnel-start     # Start tunnel
+make tunnel-restart   # Restart tunnel
+
+# Database
+make db-backup        # Backup MongoDB
+make db-restore       # Restore MongoDB
+
+# Monitoring
+make status           # Service status
+make health           # Health check
+make logs-backend     # Backend logs
+
+# Deployment
+make deploy           # Deploy to Raspberry Pi
+make update           # Update and restart
+```
+
+---
+
 ## 🏠 Raspberry Pi Deployment (Recommended)
 
 This is a complete, self-hosted deployment that gives you full control over your data while providing global HTTPS access via Cloudflare Tunnel.
@@ -177,12 +229,24 @@ Generate JWT secret: `openssl rand -base64 32`
 
 #### Step 3: Setup Cloudflare Tunnel
 
+**Automated setup:**
+
 ```bash
 # Install cloudflared (ARM64)
 wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64
 sudo mv cloudflared-linux-arm64 /usr/local/bin/cloudflared
 sudo chmod +x /usr/local/bin/cloudflared
 
+# Automated tunnel setup
+make tunnel-setup
+
+# Setup DNS routes
+make tunnel-dns
+```
+
+**Manual setup (if needed):**
+
+```bash
 # Login to Cloudflare
 cloudflared tunnel login
 
@@ -212,6 +276,22 @@ cloudflared tunnel route dns YOUR_TUNNEL_ID www.yourdomain.com
 4. Go to **SSL/TLS** → Set to **Full** or **Full (strict)**
 
 #### Step 5: Deploy Application
+
+**Simple deployment:**
+
+```bash
+# Start all services
+make prod
+
+# Install auto-start service
+make service-install
+
+# Check status
+make status
+make health
+```
+
+**Or use Docker Compose directly:**
 
 ```bash
 # Start all services
@@ -251,6 +331,35 @@ Raspberry Pi (Local Network)
 - ✅ **DDoS protection** - Cloudflare security
 
 ### 🛠️ Maintenance Commands
+
+**With Makefile (Recommended):**
+
+```bash
+# Service Management
+make status                  # Check status
+make restart                 # Restart all
+make logs                    # View all logs
+make logs-backend            # Backend logs only
+make health                  # Health check
+
+# Updates
+make update                  # Pull & rebuild & restart
+
+# Database
+make db-backup              # Backup MongoDB
+make db-restore             # Restore MongoDB
+make db-shell               # Open MongoDB shell
+
+# System Service
+make service-status         # Check systemd status
+make service-logs           # View systemd logs
+
+# Monitoring
+make stats                  # Docker resource usage
+make info                   # System information
+```
+
+**Traditional Docker Compose:**
 
 ```bash
 # System Service
