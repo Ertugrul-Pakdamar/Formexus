@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # MongoDB Service - Local Database
   mongodb:
@@ -79,10 +77,9 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: formexus-cloudflared
     restart: unless-stopped
-    command: tunnel --config /etc/cloudflared/config.yml run
-    volumes:
-      - ./cloudflare-tunnel/config.yml:/etc/cloudflared/config.yml:ro
-      - ./cloudflare-tunnel/cert.json:/etc/cloudflared/cert.json:ro
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
     networks:
       - formexus-network
     depends_on:
