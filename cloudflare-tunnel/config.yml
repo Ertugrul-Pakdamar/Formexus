@@ -5,8 +5,8 @@ ingress:
   - hostname: formexus.net
     path: /api/*
     service: http://backend:8080
-  - hostname: www.formexus.net
-    service: http://frontend:80
   - hostname: formexus.net
+    service: http://frontend:80
+  - hostname: www.formexus.net
     service: http://frontend:80
   - service: http_status:404
