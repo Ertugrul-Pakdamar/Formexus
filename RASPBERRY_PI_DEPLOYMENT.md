@@ -83,6 +83,7 @@ chmod +x deploy-rpi.sh
 ```
 
 **Script otomatik olarak:**
+
 - ✅ Docker ve Docker Compose kurar
 - ✅ Environment dosyalarını (.env) oluşturur
 - ✅ Cloudflare Tunnel yapılandırır
@@ -104,6 +105,7 @@ docker compose ps
 ```
 
 **Beklenen çıktı:**
+
 ```
 NAME                   STATUS         PORTS
 formexus-mongodb       Up (healthy)   27017:27017
