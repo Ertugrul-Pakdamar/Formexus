@@ -29,7 +29,9 @@ services:
       - PORT=${PORT}
       - ENV=${ENV}
       - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DATABASE=${MONGO_DATABASE}
       - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=24h
       - FRONTEND_URL=${FRONTEND_URL}
     depends_on:
       mongodb:
