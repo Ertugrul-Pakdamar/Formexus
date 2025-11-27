@@ -31,8 +31,11 @@ services:
     restart: unless-stopped
     environment:
       - PORT=8080
+      - ENV=production
       - MONGODB_URI=${MONGODB_URI}
+      - MONGODB_DATABASE=${MONGO_DATABASE:-formexus}
       - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=24h
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
       - GIN_MODE=release
     depends_on:
