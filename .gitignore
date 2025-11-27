@@ -7,6 +7,9 @@
 **/.env.local
 **/.env.production
 
+# Deployment scripts with sensitive data
+deploy-rpi.sh
+
 # Secrets and credentials
 secrets/
 *.key
@@ -16,6 +19,7 @@ service-account.json
 cloudflare-tunnel/credentials.json
 cloudflare-tunnel/*.json
 cloudflare-tunnel/*.pem
+cloudflare-tunnel/cert.json
 
 # Database files
 *.db

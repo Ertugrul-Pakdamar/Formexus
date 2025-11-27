@@ -168,7 +168,7 @@ make update           # Update and restart
 
 ## 🏠 Raspberry Pi Deployment (Recommended)
 
-This is a complete, self-hosted deployment that gives you full control over your data while providing global HTTPS access via Cloudflare Tunnel.
+**⚡ Tek Komutla Kurulum! Deploy script ile 10 dakikada canlıya alın.**
 
 ### 📋 Prerequisites
 
@@ -182,22 +182,56 @@ This is a complete, self-hosted deployment that gives you full control over your
 **Software:**
 
 - Raspberry Pi OS (64-bit)
-- Docker & Docker Compose
 - Cloudflare account (free tier)
 - Domain name (required)
 
-### 🚀 Quick Start (5 Steps)
+### 🚀 Otomatik Kurulum (3 Adım)
 
-#### Step 1: Prepare Raspberry Pi
+#### 1️⃣ Raspberry Pi'da Projeyi Klonla
 
 ```bash
-# Update system
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y git curl wget
+# Raspberry Pi'a SSH ile bağlan
+ssh pi@your-raspberry-pi-ip
 
-# Install Docker
-curl -fsSL https://get.docker.com | sh
-sudo usermod -aG docker $USER
+# Projeyi klonla
+git clone https://github.com/Ertugrul-Pakdamar/Formexus.git
+cd Formexus
+```
+
+#### 2️⃣ Deploy Script'i Oluştur
+
+```bash
+# Template'ten deploy script'i oluştur
+./create-deploy-script.sh
+
+# deploy-rpi.sh dosyasını düzenle ve hassas bilgileri ekle
+nano deploy-rpi.sh
+```
+
+**deploy-rpi.sh içinde düzenle:**
+
+```bash
+# MongoDB Credentials
+MONGO_ROOT_USERNAME="admin"
+MONGO_ROOT_PASSWORD="güçlü-şifre-buraya"  # ← BURAYA GERÇEKTEKİNİ YAZ
+
+# JWT Secret (openssl rand -base64 32 ile oluştur)
+JWT_SECRET="jwt-secret-buraya"  # ← BURAYA GERÇEKTEKİNİ YAZ
+
+# Cloudflare Tunnel
+TUNNEL_ID="tunnel-id-buraya"  # ← Cloudflare Dashboard'dan al
+DOMAIN="yourdomain.com"  # ← Domain adını yaz
+
+# Cloudflare Tunnel Credentials
+TUNNEL_CREDENTIALS='{ "AccountTag": "...", "TunnelSecret": "...", ... }'  # ← cert.json içeriği
+```
+
+#### 3️⃣ Kurulumu Başlat
+
+```bash
+# Deploy script'i çalıştır (10-15 dakika sürer)
+chmod +x deploy-rpi.sh
+./deploy-rpi.sh
 newgrp docker
 
 # Install Docker Compose
