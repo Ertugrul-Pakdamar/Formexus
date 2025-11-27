@@ -53,15 +53,9 @@ func main() {
 	app.Use(middleware.SecurityHeaders())
 	app.Use(middleware.Logger())
 
-	// CORS configuration - allow frontend URL from environment
-	allowedOrigins := cfg.CORS.AllowedOrigins[0]
-	if len(cfg.CORS.AllowedOrigins) > 1 {
-		for i := 1; i < len(cfg.CORS.AllowedOrigins); i++ {
-			allowedOrigins += "," + cfg.CORS.AllowedOrigins[i]
-		}
-	}
+	// CORS configuration
 	app.Use(cors.New(cors.Config{
-		AllowOrigins:     allowedOrigins,
+		AllowOrigins:     cfg.CORS.AllowedOrigins[0],
 		AllowMethods:     "GET,POST,PUT,DELETE,OPTIONS",
 		AllowHeaders:     "Origin,Content-Type,Accept,Authorization",
 		AllowCredentials: true,

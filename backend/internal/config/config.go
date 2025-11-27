@@ -76,8 +76,6 @@ func Load() *Config {
 		CORS: CORSConfig{
 			AllowedOrigins: []string{
 				getEnv("FRONTEND_URL", "http://localhost:5173"),
-				"http://localhost:5173",
-				"https://formexus.onrender.com",
 			},
 		},
 	}
