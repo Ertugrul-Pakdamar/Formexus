@@ -61,7 +61,7 @@ func Load() *Config {
 			Env:  getEnv("ENV", "development"),
 		},
 		Database: DatabaseConfig{
-			URI:      getEnv("MONGODB_URI", "mongodb://localhost:27017/formexus"),
+			URI:      getEnv("MONGODB_URI", ""),
 			Database: getEnv("MONGODB_DATABASE", "formexus"),
 		},
 		JWT: JWTConfig{
@@ -75,7 +75,7 @@ func Load() *Config {
 		},
 		CORS: CORSConfig{
 			AllowedOrigins: []string{
-				getEnv("FRONTEND_URL", "http://localhost:5173"),
+				getEnv("FRONTEND_URL", "*"),
 			},
 		},
 	}
