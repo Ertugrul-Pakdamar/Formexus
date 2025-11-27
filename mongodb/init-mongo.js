@@ -1,5 +1,5 @@
-# MongoDB Initialization Script
-# This script creates the initial database and user
+// MongoDB Initialization Script
+// This script creates the initial database and user
 
 db = db.getSiblingDB('formexus');
 
