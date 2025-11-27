@@ -13,13 +13,13 @@ services:
   # Backend Service (Go/Fiber)
   - type: web
     name: formexus-backend
-    runtime: go
+    runtime: docker
     region: frankfurt
     plan: free
     branch: main
     rootDir: backend
-    buildCommand: go build -o server cmd/server/main.go
-    startCommand: ./server
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /health
     envVars:
       - key: PORT
@@ -40,16 +40,16 @@ services:
   # Frontend Service (React/Vite with Node.js server for SPA routing)
   - type: web
     name: formexus-frontend
-    runtime: node
+    runtime: docker
     region: frankfurt
     plan: free
     branch: main
     rootDir: frontend
-    buildCommand: npm install && npm run build
-    startCommand: npm start
-    envVars:
-      - key: PORT
-        value: 3000
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    dockerBuildArgs:
       - key: VITE_API_URL
         sync: false # Set manually: https://your-backend.onrender.com/api
-
+    envVars:
+      - key: PORT
+        value: 80

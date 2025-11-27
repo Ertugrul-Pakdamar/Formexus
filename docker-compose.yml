@@ -77,9 +77,10 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: formexus-cloudflared
     restart: unless-stopped
-    command: tunnel run
-    environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    command: tunnel --config /etc/cloudflared/config.yml run
+    volumes:
+      - ./cloudflare-tunnel/config.yml:/etc/cloudflared/config.yml:ro
+      - ./cloudflare-tunnel/credentials.json:/etc/cloudflared/credentials.json:ro
     networks:
       - formexus-network
     depends_on:

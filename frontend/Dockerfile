@@ -1,5 +1,5 @@
-# Multi-stage build for Raspberry Pi (ARM64)
-FROM --platform=linux/arm64 node:20-alpine AS builder
+# Multi-stage build
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
 # Production stage - Nginx
-FROM --platform=linux/arm64 nginx:alpine
+FROM nginx:alpine
 
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
