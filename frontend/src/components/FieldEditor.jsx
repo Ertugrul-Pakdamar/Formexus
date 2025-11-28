@@ -1,3 +1,18 @@
+/**
+ * Alan Düzenleyici Bileşeni
+ * Form alanlarını düzenlemek için kullanılan bileşen
+ * 
+ * @param {Object} field - Düzenlenecek alan
+ * @param {number} index - Alan indexi
+ * @param {boolean} isSelected - Alanın seçili olup olmadığı
+ * @param {Function} onUpdate - Alan güncellendiğinde çağrılacak fonksiyon
+ * @param {Function} onDelete - Alan silindiğinde çağrılacak fonksiyon
+ * @param {Function} onMoveUp - Alan yukarı taşındığında çağrılacak fonksiyon
+ * @param {Function} onMoveDown - Alan aşağı taşındığında çağrılacak fonksiyon
+ * @param {Function} onDuplicate - Alan kopyalandığında çağrılacak fonksiyon
+ * @param {boolean} canMoveUp - Yukarı taşıma yapılabilir mi
+ * @param {boolean} canMoveDown - Aşağı taşıma yapılabilir mi
+ */
 export default function FieldEditor({
   field,
   index,
@@ -10,25 +25,40 @@ export default function FieldEditor({
   canMoveUp,
   canMoveDown,
 }) {
+  // Alanın seçeneklere ihtiyacı var mı (radio, checkbox, dropdown)
   const hasOptions = ['single_choice', 'multi_choice', 'dropdown'].includes(field.type)
+  // Alanın ölçeğe ihtiyacı var mı (linear scale, rating)
   const hasScale = ['linear_scale', 'rating'].includes(field.type)
 
+  /**
+   * Yeni seçenek ekler
+   */
   const addOption = () => {
     const newOptions = [...(field.options || []), `Option ${(field.options?.length || 0) + 1}`]
     onUpdate({ options: newOptions })
   }
 
+  /**
+   * Seçeneği günceller
+   * @param {number} optionIndex - Seçenek indexi
+   * @param {string} value - Yeni değer
+   */
   const updateOption = (optionIndex, value) => {
     const newOptions = [...field.options]
     newOptions[optionIndex] = value
     onUpdate({ options: newOptions })
   }
 
+  /**
+   * Seçeneği siler
+   * @param {number} optionIndex - Silinecek seçenek indexi
+   */
   const deleteOption = (optionIndex) => {
     const newOptions = field.options.filter((_, i) => i !== optionIndex)
     onUpdate({ options: newOptions })
   }
 
+  // Bölüm başlığı için özel render
   if (field.type === 'section') {
     return (
       <div className="p-6">

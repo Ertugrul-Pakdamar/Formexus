@@ -97,7 +97,7 @@ func main() {
 	protected.Get("/forms/:id/stats", formHandler.GetFormStats)                  // Get stats
 	protected.Delete("/submissions/:submissionId", formHandler.DeleteSubmission) // Delete submission
 
-	// Start server
+	// Sunucuyu başlat
 	port := fmt.Sprintf(":%s", cfg.Server.Port)
 	go func() {
 		if err := app.Listen(port); err != nil {
@@ -107,7 +107,7 @@ func main() {
 
 	log.Printf("✅ Server started on port %s", cfg.Server.Port)
 
-	// Graceful shutdown
+	// Graceful shutdown - SIGINT veya SIGTERM sinyali bekle
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit

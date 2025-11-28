@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import formAPI from '../services/formApi'
@@ -8,24 +8,36 @@ import ThemeCustomizer from '../components/ThemeCustomizer'
 import Toast from '../components/Toast'
 import LanguageSwitcher from '../components/LanguageSwitcher'
 
+/**
+ * Form Oluşturucu/Düzenleyici Sayfası
+ * Form oluşturma, düzenleme, önizleme ve yayınlama işlemlerini yönetir
+ */
 export default function FormBuilder() {
-  const { id } = useParams()
+  const { id } = useParams() // URL'den form ID'sini al
   const navigate = useNavigate()
-  const { t } = useLanguage()
+  const { t } = useLanguage() // Çeviri fonksiyonu
+  
+  // State yönetimi
   const [form, setForm] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [activeTab, setActiveTab] = useState('edit') // 'edit', 'preview', or 'theme'
+  const [activeTab, setActiveTab] = useState('edit') // 'edit', 'preview', veya 'theme'
   const [saving, setSaving] = useState(false)
   const [lastSaved, setLastSaved] = useState(null)
   const [toast, setToast] = useState({ isOpen: false, message: '', type: 'success' })
+  
+  // Otomatik kaydetme için ref'ler
   const saveTimeoutRef = useRef(null)
   const isInitialMount = useRef(true)
 
+  /**
+   * Component ilk yüklendiğinde veya ID değiştiğinde çalışır
+   * Mevcut formu yükler veya yeni form oluşturur
+   */
   useEffect(() => {
     if (id) {
       loadForm()
     } else {
-      // New form
+      // Yeni form için varsayılan değerler
       setForm({
         title: t('untitledForm'),
         description: '',
@@ -47,6 +59,9 @@ export default function FormBuilder() {
     }
   }, [id])
 
+  /**
+   * Mevcut formu API'den yükler
+   */
   const loadForm = async () => {
     try {
       setLoading(true)
@@ -62,19 +77,23 @@ export default function FormBuilder() {
     }
   }
 
-  // Auto-save effect
+  /**
+   * Otomatik kaydetme efekti
+   * Form değiştiğinde 1.5 saniye sonra otomatik kaydeder
+   */
   useEffect(() => {
+    // İlk yüklemede veya form yoksa çalışma
     if (!form || !id || isInitialMount.current) {
       isInitialMount.current = false
       return
     }
 
-    // Clear existing timeout
+    // Mevcut timeout'u temizle
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current)
     }
 
-    // Set new timeout for auto-save
+    // Yeni timeout ayarla (1.5 saniye hareketsizlikten sonra kaydet)
     saveTimeoutRef.current = setTimeout(async () => {
       try {
         setSaving(true)
@@ -85,8 +104,9 @@ export default function FormBuilder() {
       } finally {
         setSaving(false)
       }
-    }, 1500) // Auto-save after 1.5 seconds of inactivity
+    }, 1500)
 
+    // Cleanup: component unmount olduğunda timeout'u temizle
     return () => {
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current)
@@ -94,13 +114,18 @@ export default function FormBuilder() {
     }
   }, [form, id])
 
+  /**
+   * Manuel kaydetme fonksiyonu
+   */
   const handleSave = async () => {
     try {
       setSaving(true)
       if (id) {
+        // Mevcut formu güncelle
         await formAPI.updateForm(id, form)
         setLastSaved(new Date())
       } else {
+        // Yeni form oluştur ve düzenleme sayfasına yönlendir
         const newForm = await formAPI.createForm(form)
         navigate(`/workspace/forms/${newForm.id}`, { replace: true })
         return
@@ -114,6 +139,9 @@ export default function FormBuilder() {
     }
   }
 
+  /**
+   * Form yayınlama/yayından kaldırma
+   */
   const handlePublish = async () => {
     try {
       setSaving(true)
@@ -139,6 +167,7 @@ export default function FormBuilder() {
     }
   }
 
+  // Yükleme durumu
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -150,15 +179,18 @@ export default function FormBuilder() {
     )
   }
 
+  // Form yüklenene kadar hiçbir şey gösterme
   if (!form) return null
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
+      {/* Üst Bar - Form başlığı ve işlem butonları */}
       <div className="bg-white shadow-sm border-b sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
+            {/* Sol taraf - Geri butonu ve form başlığı */}
             <div className="flex items-center space-x-4">
+              {/* Çalışma alanına dön */}
               <button
                 onClick={() => navigate('/workspace')}
                 className="text-gray-600 hover:text-gray-900"

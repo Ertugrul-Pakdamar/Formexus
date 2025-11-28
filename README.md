@@ -4,7 +4,7 @@
   
   ![Formexus Logo](https://img.shields.io/badge/Formexus-Form%20Builder-6366f1?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIxIDE2VjhhMiAyIDAgMCAwLTEtMS43M2wtNy00YTIgMiAwIDAgMC0yIDBsLTcgNEEyIDIgMCAwIDAgMyA4djhhMiAyIDAgMCAwIDEgMS43M2w3IDRhMiAyIDAgMCAwIDIgMGw3LTRBMiAyIDAgMCAwIDIxIDE2eiIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+)
   
-  **Modern, Powerful & Intelligent Form Builder Platform**
+  **Modern, Güçlü & Akıllı Form Oluşturucu Platformu**
   
   [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=flat&logo=react)](https://react.dev/)
   [![Go](https://img.shields.io/badge/Go-1.21-00ADD8?style=flat&logo=go)](https://golang.org/)
@@ -12,92 +12,92 @@
   [![Fiber](https://img.shields.io/badge/Fiber-2.52-00ACD7?style=flat&logo=go)](https://gofiber.io/)
   [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
   
-  [🌐 Live Demo](https://formexus.net) | [📖 Features](#-features) | [🚀 Quick Start](#-quick-start)
+  [🌐 Canlı Demo](https://formexus.net) | [📖 Özellikler](#-özellikler) | [🚀 Hızlı Başlangıç](#-hızlı-başlangıç)
   
 </div>
 
 ---
 
-## 🎯 About
+## 🎯 Hakkında
 
-**Formexus** is a next-generation form builder platform that empowers you to create beautiful, intelligent forms in minutes. Built with modern technologies and a focus on user experience, Formexus combines powerful features with an intuitive interface.
+**Formexus**, dakikalar içinde güzel ve akıllı formlar oluşturmanızı sağlayan yeni nesil bir form oluşturucu platformudur. Modern teknolojilerle geliştirilmiş, kullanıcı deneyimine odaklanmış, güçlü özellikleri sezgisel bir arayüzle birleştiren bir çözümdür.
 
-### 🌐 Live Demo
+### 🌐 Canlı Demo
 
-**Try it now:** [https://formexus.net](https://formexus.net)
+**Şimdi deneyin:** [https://formexus.net](https://formexus.net)
 
-_Self-hosted on Raspberry Pi with Cloudflare Tunnel for global access._
+_Raspberry Pi üzerinde self-hosted, Cloudflare Tunnel ile global erişim._
 
-### ✨ Why Formexus?
+### ✨ Neden Formexus?
 
-- 🎨 **Beautiful Themes** - Customize colors, backgrounds, and styles
-- 🌍 **Multilingual** - Full support for Turkish and English (easily extensible)
-- 🚀 **Real-time Auto-save** - Never lose your work
-- 📊 **Smart Analytics** - CSV export and response tracking
-- 🔒 **Secure** - JWT authentication and enterprise-grade security
-- ⚡ **Lightning Fast** - Built with Go and React for optimal performance
-- 🎭 **Template Library** - 6+ pre-built templates to get started quickly
+- 🎨 **Güzel Temalar** - Renkler, arka planlar ve stilleri özelleştirin
+- 🌍 **Çoklu Dil** - Türkçe ve İngilizce desteği (kolayca genişletilebilir)
+- 🚀 **Gerçek Zamanlı Otomatik Kaydetme** - Çalışmanızı asla kaybetmeyin
+- 📊 **Akıllı Analitik** - CSV export ve yanıt takibi
+- 🔒 **Güvenli** - JWT kimlik doğrulama ve kurumsal seviye güvenlik
+- ⚡ **Yıldırım Hızı** - Optimal performans için Go ve React ile geliştirildi
+- 🎭 **Şablon Kütüphanesi** - Hızlı başlamak için 6+ hazır şablon
 
 ---
 
-## 🌟 Features
+## 🌟 Özellikler
 
-### 🎨 Form Builder
+### 🎨 Form Oluşturucu
 
-- **Intuitive Interface** - Easy-to-use form creation experience
-- **15+ Field Types** - Text, email, phone, dropdown, rating, linear scale, and more
-- **Real-time Preview** - See changes as you make them with theme support
-- **Theme Customization** - 6 brand colors and 5 background options
-- **Auto-save** - Changes saved automatically every 1.5 seconds
+- **Sezgisel Arayüz** - Kullanımı kolay form oluşturma deneyimi
+- **15+ Alan Tipi** - Metin, e-posta, telefon, açılır menü, puan, ölçek ve daha fazlası
+- **Gerçek Zamanlı Önizleme** - Değişiklikleri tema desteğiyle anında görün
+- **Tema Özelleştirme** - 6 marka rengi ve 5 arka plan seçeneği
+- **Otomatik Kayıt** - Değişiklikler her 1.5 saniyede otomatik kaydedilir
 
-### 📝 Field Types
+### 📝 Alan Tipleri
 
 ```
-✓ Short Text          ✓ Email             ✓ Phone Number
-✓ Long Text           ✓ URL               ✓ Number
-✓ Date                ✓ Time              ✓ Date & Time
-✓ Single Choice       ✓ Multiple Choice   ✓ Dropdown
-✓ Linear Scale        ✓ Rating            ✓ Section Header
+✓ Kısa Metin          ✓ E-posta           ✓ Telefon Numarası
+✓ Uzun Metin          ✓ URL               ✓ Sayı
+✓ Tarih               ✓ Saat              ✓ Tarih & Saat
+✓ Tek Seçim           ✓ Çoklu Seçim       ✓ Açılır Menü
+✓ Doğrusal Ölçek      ✓ Puan              ✓ Bölüm Başlığı
 ```
 
-### 🎯 Smart Templates
+### 🎯 Akıllı Şablonlar
 
-- **Blank Form** - Start from scratch
-- **Contact Form** - Collect contact information
-- **Survey** - Gather feedback and opinions
-- **Registration** - Event or course registration
-- **Quiz** - Create tests and quizzes
-- **Feedback** - Customer feedback form
+- **Boş Form** - Sıfırdan başlayın
+- **İletişim Formu** - İletişim bilgileri toplayın
+- **Anket** - Geri bildirim ve görüşler toplayın
+- **Kayıt** - Etkinlik veya kurs kaydı
+- **Quiz** - Test ve sınavlar oluşturun
+- **Geri Bildirim** - Müşteri geri bildirim formu
 
-### 🌍 Internationalization
+### 🌍 Uluslararasılaştırma
 
-- Full Turkish and English support
-- Language switcher on all pages
-- Template fields translate automatically
-- User-generated content remains unchanged
+- Tam Türkçe ve İngilizce desteği
+- Tüm sayfalarda dil değiştirici
+- Şablon alanları otomatik çevrilir
+- Temiz ve okunabilir kod yapısı
 
-### 🔐 Authentication & Security
+### 🔐 Kimlik Doğrulama & Güvenlik
 
-- **Email/Password Authentication** - Traditional sign-in method
-- **JWT Tokens** - Secure session management
-- **bcrypt Password Hashing** - Industry-standard password protection
-- **Protected Routes** - Middleware-based authorization
-- **CORS Protection** - Cross-origin security
+- **E-posta/Şifre Kimlik Doğrulama** - Geleneksel giriş yöntemi
+- **JWT Token** - Güvenli oturum yönetimi
+- **bcrypt Şifre Hashleme** - Endüstri standardı şifre koruması
+- **Korumalı Rotalar** - Middleware tabanlı yetkilendirme
+- **CORS Koruması** - Cross-origin güvenliği
 
-### 📊 Response Management
+### 📊 Yanıt Yönetimi
 
-- View all form submissions in a clean table
-- Export responses to CSV
-- Real-time response tracking
-- Date and time stamps for each submission
+- Tüm form gönderimlerini temiz bir tabloda görüntüleyin
+- Yanıtları CSV'ye aktarın
+- Gerçek zamanlı yanıt takibi
+- Her gönderim için tarih ve saat damgası
 
-### 🎨 Theme System
+### 🎨 Tema Sistemi
 
-**6 Brand Colors:**
+**6 Marka Rengi:**
 
-- 💜 Purple • 🔵 Blue • 💚 Green • 💗 Pink • 🔷 Indigo • 🧡 Orange
+- 💜 Mor • 🔵 Mavi • 💚 Yeşil • 💗 Pembe • 🔷 İndigo • 🧡 Turuncu
 
-**5 Background Options:**
+**5 Arka Plan Seçeneği:**
 
 - ⚪ White • 🌫️ Light Gray • 💙 Light Blue • 💜 Light Purple • 💗 Light Pink
 

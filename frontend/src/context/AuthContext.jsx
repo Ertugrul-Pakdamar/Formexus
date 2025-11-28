@@ -1,8 +1,13 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { authAPI } from '../services/api'
 
+// Kimlik doğrulama context'i
 const AuthContext = createContext(null)
 
+/**
+ * Auth context hook
+ * Kimlik doğrulama işlemlerine erişim sağlar
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext)
   if (!context) {
@@ -11,12 +16,16 @@ export const useAuth = () => {
   return context
 }
 
+/**
+ * Kimlik Doğrulama Provider
+ * Kullanıcı girişi, kaydı ve çıkışı yönetir
+ */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  // Uygulama başlatıldığında kullanıcı oturumunu kontrol et
   useEffect(() => {
-    // Check if user is logged in on mount
     const token = localStorage.getItem('token')
     const storedUser = localStorage.getItem('user')
     
@@ -26,6 +35,12 @@ export const AuthProvider = ({ children }) => {
     setLoading(false)
   }, [])
 
+  /**
+   * Kullanıcı girişi
+   * @param {string} email - Kullanıcı e-postası
+   * @param {string} password - Kullanıcı şifresi
+   * @returns {Promise<Object>} Başarı/hata durumu
+   */
   const login = async (email, password) => {
     try {
       const response = await authAPI.login({ email, password })
@@ -41,6 +56,14 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  /**
+   * Yeni kullanıcı kaydı
+   * @param {string} name - Kullanıcı adı
+   * @param {string} email - E-posta adresi
+   * @param {string} password - Şifre
+   * @param {string} confirmPassword - Şifre tekrarı
+   * @returns {Promise<Object>} Başarı/hata durumu
+   */
   const register = async (name, email, password, confirmPassword) => {
     try {
       const response = await authAPI.register({ 
@@ -61,6 +84,10 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  /**
+   * Kullanıcı çıkışı
+   * Tüm oturum verilerini temizler
+   */
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')

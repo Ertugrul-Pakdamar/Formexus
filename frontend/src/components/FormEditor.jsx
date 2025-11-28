@@ -2,6 +2,10 @@ import { useState } from 'react'
 import FieldEditor from './FieldEditor'
 import { useLanguage } from '../context/LanguageContext'
 
+/**
+ * Kullanılabilir form alan tipleri
+ * Her tip için ikon ve etiket içerir
+ */
 const FIELD_TYPES = [
   { 
     value: 'short_text', 
@@ -80,11 +84,19 @@ const FIELD_TYPES = [
   },
 ]
 
+/**
+ * Form Düzenleyici Bileşeni
+ * Form alanlarını ekleme, düzenleme ve yönetme işlevlerini sağlar
+ */
 export default function FormEditor({ form, onChange }) {
   const { t } = useLanguage()
-  const [selectedFieldIndex, setSelectedFieldIndex] = useState(null)
-  const [showFieldMenu, setShowFieldMenu] = useState(false)
+  const [selectedFieldIndex, setSelectedFieldIndex] = useState(null) // Seçili alan indexi
+  const [showFieldMenu, setShowFieldMenu] = useState(false) // Alan ekleme menüsü görünürlüğü
 
+  /**
+   * Forma yeni alan ekler
+   * @param {string} type - Eklenecek alan tipi
+   */
   const addField = (type) => {
     const newField = {
       id: `field_${Date.now()}`,
@@ -93,7 +105,9 @@ export default function FormEditor({ form, onChange }) {
       description: '',
       required: false,
       order: form.fields.length,
+      // Seçim alanları için seçenekler ekle
       ...(needsOptions(type) && { options: ['Option 1', 'Option 2', 'Option 3'] }),
+      // Ölçek alanları için değer aralıkları
       ...(type === 'linear_scale' && { minValue: 1, maxValue: 5 }),
       ...(type === 'rating' && { maxValue: 5 }),
     }
@@ -106,30 +120,52 @@ export default function FormEditor({ form, onChange }) {
     setSelectedFieldIndex(form.fields.length)
   }
 
+  /**
+   * Mevcut alanı günceller
+   * @param {number} index - Alan indexi
+   * @param {Object} updates - Güncellenecek özellikler
+   */
   const updateField = (index, updates) => {
     const newFields = [...form.fields]
     newFields[index] = { ...newFields[index], ...updates }
     onChange({ ...form, fields: newFields })
   }
 
+  /**
+   * Alanı siler
+   * @param {number} index - Silinecek alan indexi
+   */
   const deleteField = (index) => {
     const newFields = form.fields.filter((_, i) => i !== index)
     onChange({ ...form, fields: newFields })
     setSelectedFieldIndex(null)
   }
 
+  /**
+   * Alanı yukarı veya aşağı taşır
+   * @param {number} index - Taşınacak alan indexi
+   * @param {string} direction - Yön ('up' veya 'down')
+   */
   const moveField = (index, direction) => {
     const newFields = [...form.fields]
     const newIndex = direction === 'up' ? index - 1 : index + 1
+    
+    // Sınır kontrolü
     if (newIndex < 0 || newIndex >= newFields.length) return
 
+    // İki alanın yerini değiştir
     [newFields[index], newFields[newIndex]] = [newFields[newIndex], newFields[index]]
+    // Sıra numaralarını güncelle
     newFields.forEach((field, i) => (field.order = i))
 
     onChange({ ...form, fields: newFields })
     setSelectedFieldIndex(newIndex)
   }
 
+  /**
+   * Alanı kopyalar
+   * @param {number} index - Kopyalanacak alan indexi
+   */
   const duplicateField = (index) => {
     const field = form.fields[index]
     const newField = {
@@ -146,7 +182,7 @@ export default function FormEditor({ form, onChange }) {
 
   return (
     <div className="space-y-6">
-      {/* Form Description */}
+      {/* Form Açıklaması */}
       <div className="bg-white rounded-lg shadow-sm p-6 border">
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-700 mb-2">{t('description')}</label>
@@ -160,7 +196,7 @@ export default function FormEditor({ form, onChange }) {
         </div>
       </div>
 
-      {/* Fields */}
+      {/* Form Alanları */}
       {form.fields.map((field, index) => (
         <div
           key={field.id}
@@ -184,7 +220,7 @@ export default function FormEditor({ form, onChange }) {
         </div>
       ))}
 
-      {/* Add Field Button */}
+      {/* Alan Ekleme Butonu */}
       <div className="relative">
         <button
           onClick={() => setShowFieldMenu(!showFieldMenu)}
@@ -193,6 +229,7 @@ export default function FormEditor({ form, onChange }) {
           + {t('addField')}
         </button>
 
+        {/* Alan Tipi Seçim Menüsü */}
         {showFieldMenu && (
           <div className="absolute z-10 mt-2 w-full bg-white rounded-lg shadow-lg border max-h-96 overflow-auto">
             <div className="grid grid-cols-2 gap-2 p-4">
@@ -211,11 +248,12 @@ export default function FormEditor({ form, onChange }) {
         )}
       </div>
 
-      {/* Settings */}
+      {/* Form Ayarları */}
       <div className="bg-white rounded-lg shadow-sm p-6 border">
         <h3 className="text-lg font-semibold mb-4">{t('formSettings')}</h3>
         
         <div className="space-y-4">
+          {/* Çoklu gönderim izni */}
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -231,6 +269,7 @@ export default function FormEditor({ form, onChange }) {
             <span className="ml-2 text-sm text-gray-700">{t('allowMultipleSubmissions')}</span>
           </label>
 
+          {/* Giriş gereksinimi */}
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -246,6 +285,7 @@ export default function FormEditor({ form, onChange }) {
             <span className="ml-2 text-sm text-gray-700">{t('requireLogin')}</span>
           </label>
 
+          {/* İlerleme çubuğu */}
           <label className="flex items-center">
             <input
               type="checkbox"
@@ -261,6 +301,7 @@ export default function FormEditor({ form, onChange }) {
             <span className="ml-2 text-sm text-gray-700">{t('showProgressBar')}</span>
           </label>
 
+          {/* Onay mesajı */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               {t('confirmationMessage')}
@@ -283,6 +324,11 @@ export default function FormEditor({ form, onChange }) {
   )
 }
 
+/**
+ * Alan tipine göre varsayılan etiket döndürür
+ * @param {string} type - Alan tipi
+ * @returns {string} Varsayılan etiket
+ */
 function getDefaultLabel(type) {
   const labels = {
     short_text: 'Short Answer',
@@ -304,6 +350,11 @@ function getDefaultLabel(type) {
   return labels[type] || 'Untitled Question'
 }
 
+/**
+ * Alan tipinin seçeneklere ihtiyacı olup olmadığını kontrol eder
+ * @param {string} type - Alan tipi
+ * @returns {boolean} Seçenek gereksinimi
+ */
 function needsOptions(type) {
   return ['single_choice', 'multi_choice', 'dropdown'].includes(type)
 }
