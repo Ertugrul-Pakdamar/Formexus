@@ -73,8 +73,8 @@ services:
     restart: unless-stopped
     command: tunnel --config /etc/cloudflared/config.yml run
     volumes:
-      - ./cloudflare-tunnel/config.yml:/etc/cloudflared/config.yml:ro
-      - ./cloudflare-tunnel/credentials.json:/etc/cloudflared/credentials.json:ro
+      - ./cloudflare-tunnel/config.yml:/etc/cloudflared/config.yml:ro,z
+      - ./cloudflare-tunnel/credentials.json:/etc/cloudflared/credentials.json:ro,z
     networks:
       - formexus
     depends_on:
